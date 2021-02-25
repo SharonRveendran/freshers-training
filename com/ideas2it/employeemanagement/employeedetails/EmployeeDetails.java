@@ -28,7 +28,7 @@ public class EmployeeDetails {
 		    employeeDetails.createEmployee();
 	            break;
 		case 2:
-		    employeeDetails.readEmployee();
+		    employeeDetails.displayEmployee();
 		    break;	
 		case 3:
 		   employeeDetails.updateEmployee();
@@ -65,7 +65,7 @@ public class EmployeeDetails {
     /**
      * Displaying employee details based on employee id
      */
-    private void readEmployee() {
+    private void displayEmployee() {
     	System.out.println("Enter the employee id");
     	int id = Integer.parseInt(scanner.nextLine());
     	System.out.println(employees.get(id));
