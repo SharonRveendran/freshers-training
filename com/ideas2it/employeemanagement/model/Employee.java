@@ -10,8 +10,8 @@ import java.util.Date;
  * @created 28-02-2021
  */
 public class Employee {
-	private int id;
-	private String name;
+    private int id;
+    private String name;
     private String designation;
     private long salary;
     private long mobile;
@@ -24,61 +24,61 @@ public class Employee {
     	this.id = id;
     	this.mobile = mobile;
     	this.dob = dob;
-	}
+    }
 
-	public String toString() {
+    public String toString() {
     	return "\nEmployee Id          =  " + id + "\nEmployee Name        =  "
-    			+ name + "\nEmployee Designation =  " + designation
-    			+ "\nEmployee Salary      =  " + salary
-    			+"\nMobile               =  " + mobile + "\nDate of Birth        =  "
-    			+ new SimpleDateFormat("dd/mm/yyy").format(dob) + "\n";
+                + name + "\nEmployee Designation =  " + designation
+    		+ "\nEmployee Salary      =  " + salary
+    		+"\nMobile               =  " + mobile + "\nDate of Birth        =  "
+    		+ new SimpleDateFormat("dd/mm/yyy").format(dob) + "\n";
     }
     
     public String getName() {
-		return name;
-	}
+	return name;
+    }
     
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+	this.name = name;
+    }
 	
-	public String getDesignation() {
-		return designation;
-	}
+    public String getDesignation() {
+	return designation;
+    }
 	
-	public void setDesignation(String designation ) {
-		this.designation = designation;
-	}
+    public void setDesignation(String designation ) {
+	this.designation = designation;
+    }
 	
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+	return id;
+    }
 	
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+	this.id = id;
+    }
 	
-	public long getSalary() {
-		return salary;
-	}
+    public long getSalary() {
+	return salary;
+    }
 	
-	public void setSalary(long salary) {
-		this.salary = salary;
-	} 
+    public void setSalary(long salary) {
+	this.salary = salary;
+    } 
 	
-	public void setMobile(long mobile) {
-		this.mobile = mobile;
-	}
+    public void setMobile(long mobile) {
+	this.mobile = mobile;
+    }
 	
-	public long getMobile() {
-		return mobile;
-	}
+    public long getMobile() {
+	return mobile;
+    }
 	
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
+    public void setDob(Date dob) {
+	this.dob = dob;
+    }
 	
-	public Date getDob() {
-		return dob;
-	}
+    public Date getDob() {
+	return dob;
+    }
 }

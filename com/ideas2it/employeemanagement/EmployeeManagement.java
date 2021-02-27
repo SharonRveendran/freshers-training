@@ -15,35 +15,35 @@ import com.ideas2it.employeemanagement.model.Employee;
  * @created 28-02-2021
  */
 public class EmployeeManagement {
-	int id = 0;
-	Map<Integer, Employee> employees = new HashMap<Integer, Employee>();
-	static Scanner scanner = new Scanner(System.in);
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyy");
+    int id = 0;
+    Map<Integer, Employee> employees = new HashMap<Integer, Employee>();
+    static Scanner scanner = new Scanner(System.in);
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyy");
 	
-	public static void main(String[] args) { 
-		EmployeeManagement employeeManagement = new EmployeeManagement();
-		int flag = 0;	
-		String message = "\nSelect your option\n1 : Create employee\n"
- 	            + "2 : Read employee\n3 : Update employee\n"
- 	    		+ "4 : Delete employee\n5 : Display all\n6 : Exit";
-		int option = 0;
-		do {
-		    do {
-		        System.out.println(message);
-		        try {
-		    	    option = Integer.parseInt(scanner.nextLine());
-		    	    flag = 1;
+    public static void main(String[] args) { 
+        EmployeeManagement employeeManagement = new EmployeeManagement();
+        int flag = 0;	
+        String message = "\nSelect your option\n1 : Create employee\n"
+                + "2 : Read employee\n3 : Update employee\n"
+ 	        + "4 : Delete employee\n5 : Display all\n6 : Exit";
+        int option = 0;
+	do {
+	    do {
+	        System.out.println(message);
+		try {
+		    option = Integer.parseInt(scanner.nextLine());
+		    flag = 1;
     	        } catch (NumberFormatException e) {
-    		        System.out.println("Please enter a valid option");
+    		    System.out.println("Please enter a valid option");
     	        }
-		    } while (0 == flag);
-		    employeeManagement.start(option, message, employeeManagement);
-		} while(6 != option);   			
-	}
+	    } while (0 == flag);
+                employeeManagement.start(option, message, employeeManagement);
+	} while(6 != option);   			
+    }
 	
-	/**
-	 * Creating employee and storing in map
-	 */
+    /**
+     * Creating employee and storing in map
+     */
     private void createEmployee() {
     	id++;
     	long salary = 0l;
@@ -285,16 +285,16 @@ public class EmployeeManagement {
     	 Date dob = null;
     	 String date;
     	 System.out.println("Enter new date in given format dd/mm/yyyy");
- 		do {
- 		    date =scanner.nextLine();
- 		    try {
- 			    dob =sdf.parse(date);
- 			    flag = 1;
- 		    } catch (ParseException e) {
- 		        System.out.println("Enter a valid date ");
- 		    }
- 		}while (flag == 0);	  
- 		return dob;
+ 	 do {
+             date =scanner.nextLine();
+             try {
+                 dob =sdf.parse(date);
+ 	         flag = 1;
+             } catch (ParseException e) {
+ 	         System.out.println("Enter a valid date ");
+ 	     }
+         }while (flag == 0);	  
+ 	     return dob;
      }
      
      /*
@@ -303,14 +303,14 @@ public class EmployeeManagement {
      private int isValidOption() {
     	 int option;
     	 do {
-	         try {	    
-  	             option = Integer.parseInt(scanner.nextLine());
-  	             if(option>5)throw new  NumberFormatException();
-  	         } catch (NumberFormatException e) {
-  	             System.out.println("Enter a valid option");
-  	        	 option = 6;
+	     try {	    
+  	         option = Integer.parseInt(scanner.nextLine());
+  	         if(option>5)throw new  NumberFormatException();
+  	     } catch (NumberFormatException e) {
+  	         System.out.println("Enter a valid option");
+  	         option = 6;
              }
-	     } while (option == 6);
+	 } while (option == 6);
     	 return option;
      }
      
@@ -322,26 +322,26 @@ public class EmployeeManagement {
       */
      public void start(int option, String message, EmployeeManagement employeeManagement) {	
     	 switch (option) {
-	        case 1:
-	        	employeeManagement.createEmployee();
-		        break;
-	        case 2:
-	        	employeeManagement.readEmployee();
-		        break;	
-	        case 3:
-	        	employeeManagement.updateEmployee();
-		        break;
-	        case 4:
-	        	employeeManagement.deleteEmployee();
-		        break;
-	        case 5:
-	        	employeeManagement.displayAll();
-	        	break;
-	        case 6:
-	        	System.out.println("Thank you");
-	        	break;
-	        default:
-	        	System.out.println("Please enter a valid option");
-		} 	 
-     }
+	    case 1:
+	        employeeManagement.createEmployee();
+		break;
+	    case 2:
+	        employeeManagement.readEmployee();
+		break;	
+	    case 3:
+	        employeeManagement.updateEmployee();
+		break;
+	    case 4:
+	        employeeManagement.deleteEmployee();
+		break;
+	    case 5:
+	        employeeManagement.displayAll();
+	        break;
+	    case 6:
+	        System.out.println("Thank you");
+	        break;
+	    default:
+	        System.out.println("Please enter a valid option");
+	} 	 
+    }
 }
