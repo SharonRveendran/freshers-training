@@ -1,10 +1,10 @@
-package com.ideas2it.employeemanagement;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Scanner;
 
 import com.ideas2it.employeemanagement.model.Employee;
@@ -12,7 +12,7 @@ import com.ideas2it.employeemanagement.model.Employee;
 /**
  * Doing CRUD operation in collection
  * @author Sharon
- * @created 28-02-2021
+ * @created 01-03-2021
  */
 public class EmployeeManagement {
     int id = 0;
@@ -28,17 +28,45 @@ public class EmployeeManagement {
  	        + "4 : Delete employee\n5 : Display all\n6 : Exit";
         int option = 0;
 	do {
-	    do {
-	        System.out.println(message);
-		try {
-		    option = Integer.parseInt(scanner.nextLine());
-		    flag = 1;
-    	        } catch (NumberFormatException e) {
-    		    System.out.println("Please enter a valid option");
-    	        }
-	    } while (0 == flag);
-                employeeManagement.start(option, message, employeeManagement);
+	    System.out.println(message);
+	    try {
+                option = Integer.parseInt(scanner.nextLine());
+    	    } catch (NumberFormatException e) {
+    		option = 7;
+    	    }
+            employeeManagement.start(option, message, employeeManagement);
 	} while(6 != option);   			
+    }
+
+    /**
+      * This method will update start the CRUD operation
+      * @param option user given option
+      * @param message message for user to input option
+      * @param employeeManagement EmployeeManagement class object
+      */
+     public void start(int option, String message, EmployeeManagement employeeManagement) {	
+    	 switch (option) {
+	    case 1:
+	        employeeManagement.createEmployee();
+		break;
+	    case 2:
+	        employeeManagement.readEmployee();
+		break;	
+	    case 3:
+	        employeeManagement.updateEmployee();
+		break;
+	    case 4:
+	        employeeManagement.deleteEmployee();
+		break;
+	    case 5:
+	        employeeManagement.displayAll();
+	        break;
+            case 6 :
+	        System.out.println("Thank you");
+	        break;
+	    default:
+	        System.out.println("Please enter a valid option");
+	} 	 
     }
 	
     /**
@@ -46,8 +74,7 @@ public class EmployeeManagement {
      */
     private void createEmployee() {
     	id++;
-    	long salary = 0l;
-    	int flag = 0;
+    	long salary;
     	System.out.println("Enter name");
     	String name = scanner.nextLine();
     	System.out.println("Enter designation");
@@ -56,12 +83,12 @@ public class EmployeeManagement {
     	do {  	    
     	    try {
     	        salary = Long.parseLong(scanner.nextLine());
-    	        flag = 1;
     	    } catch (NumberFormatException e) {
-    		    System.out.println("Please enter a valid salary");
+    		System.out.println("Please enter a valid salary");
+                salary = 0;
     	    }
-    	} while (0 == flag);
-    	long mobile = createMobile();
+    	} while (0 == salary);
+    	long mobile = getMobile();
     	Date dob = createDob();
     	Employee employee = new Employee(name, designation, salary, id, mobile, dob);
     	employees.put(id, employee);   	
@@ -71,22 +98,24 @@ public class EmployeeManagement {
     /**
      * Displaying employee details based on employee id
      */
-    private void readEmployee() {
-    	int flag =0;
-    	int id =0;
+     private void readEmployee() {
+    	int id;
     	System.out.println("Enter the employee id");
-    	while (0 == flag) {  	    
+    	do {  	    
     	    try {
     	        id = Integer.parseInt(scanner.nextLine());
-    	        flag = 1;
+    	        if (0 == id) {
+    	            throw new NumberFormatException();
+    	        }
     	    } catch (NumberFormatException e) {
-    		    System.out.println("Please enter a valid employee id");
+    		System.out.println("Please enter a valid employee id");
+    		id = 0;
     	    }
-    	}
+    	} while (0 == id);
     	if ( null == employees.get(id)) {
-    		System.out.println("No employee present with the given id");
+    	    System.out.println("No employee present with the given id");
     	} else {
-    	System.out.println(employees.get(id));
+    	    System.out.println(employees.get(id));
     	}
     }
     
@@ -136,64 +165,75 @@ public class EmployeeManagement {
      * Deleting employee
      */
     private void deleteEmployee() {
-    	int flag = 0;
-    	int id = 0;
+    	int id;
     	System.out.println("Enter employee id");
-    	while (0 == flag) {  	    
+    	do {  	    
     	    try {
     	        id = Integer.parseInt(scanner.nextLine());
+    	        if (0 == id) {
+    	            throw new NumberFormatException();
+    	        }
     	        if (null == employees.get(id)) {
-    	        	System.out.println("No employee present with given id");
-    	        	flag = 1;
+    	            System.out.println("No employee present with given id");
+    	        	
     	        } else {
     	            employees.remove(id);
     	            System.out.println("Employee deleted successfully..");
-    	            flag = 1;
+    	           
     	        }
     	    } catch (NumberFormatException e) {
-    		    System.out.println("Please enter a valid employee id");
+    		System.out.println("Please enter a valid employee id");
+    		id = 0;
     	    }
-    	}
+    	} while (0 == id);
     }
     
     /**
      * 
      * @return  mobile number
      */
-    private long createMobile() {
-    	long mobile = 0l;
-    	int flag = 0;
+    private long getMobile() {
+    	Pattern pattern = Pattern.compile("(0/91)?[7-9][0-9]{9}");
+    	String input;
+    	long mobile;
     	System.out.println("Enter mobile");
-    	do{  	
-    	    try {
-    	    	mobile = Long.parseLong(scanner.nextLine());
-    	        flag = 1;
-    	    } catch (Exception e) {
-    		    System.out.println("Please enter a valid mobile");
+    	do {  	
+    	    input = scanner.nextLine();
+    	    Matcher matcher = pattern.matcher(input);
+    	    if (matcher.find() && matcher.group().equals(input)) {
+    	    	mobile = Long.parseLong(input);
+    	    	return mobile;
+    	    } else {
+    	    	mobile = 0;
+    	    	System.out.println("Enter valid mobile number");
     	    }
-    	} while (flag == 0);
-    	return mobile;
+    	} while (0 == mobile);
+    	return 0;
     }
     
     /**
      * Check whether the employee id is valid or not
      * @return  the employee id
      */
-    private int isValidId() {int x = 0;
+    private int isValidId() {
     	do {
     	    try {
- 	            id = Integer.parseInt(scanner.nextLine());
- 	            if ( null == employees.get(id)) {
-     	            System.out.println("No employee present with the given id");x=1;
+ 	        id = Integer.parseInt(scanner.nextLine());
+ 	        if (0 == id) {
+ 	            throw new NumberFormatException();
+ 	        }
+ 	        if ( null == employees.get(id)) {
+     	            System.out.println("No employee present with the given id");
      	            return 0;
      	        } else {
-     	    	    Employee employee = employees.get(id);x=1;
+     	    	    return id;
                 }
-    	     } catch (NumberFormatException e) {
- 		        System.out.println("Enter a valid employee id");
- 	         }
-    	} while(0 == x);
-        return id;
+    	   } catch (NumberFormatException e) {
+               System.out.println("Enter a valid employee id");
+ 	       id = 0;
+ 	   }
+    	} while(0 == id);
+    	return 0;
     }
     
     /*
@@ -223,19 +263,19 @@ public class EmployeeManagement {
      * @param id the employee id
      */
     private void updateSalary(int id) {
+    	long employeeSalary;
     	Employee employee = employees.get(id);
     	System.out.println("Enter new Salary");
-    	int flag = 0;
         do {  	    
             try {
-               long newSalary = Long.parseLong(scanner.nextLine());
-               employee.setSalary(newSalary);
-               flag = 1;
+               employeeSalary = Long.parseLong(scanner.nextLine());
+               employee.setSalary(employeeSalary);
                
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid salary");
+                employeeSalary = 0;
             }
-        } while (flag == 0);
+        } while (0 == employeeSalary);
     }
     
     /*
@@ -243,19 +283,19 @@ public class EmployeeManagement {
      * @param id the employee id
      */
     private void updateDob(int id) {
-    	int flag = 0;
     	Employee employee = employees.get(id);
     	System.out.println(" Enter new date in given format dd/mm/yyyy");
-		do {
-		    String date =scanner.nextLine();
-		    try {
-			    Date dob =sdf.parse(date);
-			    employee.setDob(dob);
-			    flag = 1;
-		    } catch (ParseException e) {
-		        System.out.println("Enter a valid date ");
-		    }
-		} while (flag == 0);	
+    	String date;
+	do {
+	    date =scanner.nextLine();
+            try {
+	        Date dob =sdf.parse(date);
+		employee.setDob(dob);
+	    } catch (ParseException e) {
+                System.out.println("Enter a valid date ");
+		date = "invalidDate";
+	    }
+        } while ("invalidDate".equals(date));	
     }
     
     /*
@@ -263,38 +303,40 @@ public class EmployeeManagement {
      * @param id the employee id
      */
     private void updateMobile(int id) {
+    	Pattern pattern = Pattern.compile("(0/91)?[7-9][0-9]{9}");
+    	String input;
+    	long mobile;
         Employee employee = employees.get(id);
         System.out.println("Enter new mobile number");
-        int flag = 0;
         do {  	    
-            try {
-                long mobile = Long.parseLong(scanner.nextLine());
-                employee.setMobile(mobile);
-                flag = 1;              
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid mobile");
-            }
-        } while (flag == 0);
+            input = scanner.nextLine();
+     	    Matcher matcher = pattern.matcher(input);
+     	    if (matcher.find() && matcher.group().equals(input)) {
+     	    	mobile = Long.parseLong(input);
+                employee.setMobile(mobile); 
+     	    } else {
+     	    	mobile = 0;
+     	    }
+        } while (0 == mobile);
     }
     
     /*
      * This method will create the employee Date of birth
      */
      private Date createDob() {
-    	 int flag = 0;
     	 Date dob = null;
     	 String date;
     	 System.out.println("Enter new date in given format dd/mm/yyyy");
- 	 do {
-             date =scanner.nextLine();
-             try {
-                 dob =sdf.parse(date);
- 	         flag = 1;
-             } catch (ParseException e) {
- 	         System.out.println("Enter a valid date ");
- 	     }
-         }while (flag == 0);	  
- 	     return dob;
+ 	     do {
+                 date =scanner.nextLine();
+ 		 try {
+ 	             dob =sdf.parse(date);
+ 		 } catch (ParseException e) {
+ 		      System.out.println("Enter a valid date ");
+ 		      date = "invalidDate";
+ 		 }
+             }while ("invalidDate".equals(date));	  
+             return dob;
      }
      
      /*
@@ -313,35 +355,4 @@ public class EmployeeManagement {
 	 } while (option == 6);
     	 return option;
      }
-     
-     /*
-      * This method will update start the CRUD operation
-      * @param option user given option
-      * @param message message for user to input option
-      * @param employeeManagement EmployeeManagement class object
-      */
-     public void start(int option, String message, EmployeeManagement employeeManagement) {	
-    	 switch (option) {
-	    case 1:
-	        employeeManagement.createEmployee();
-		break;
-	    case 2:
-	        employeeManagement.readEmployee();
-		break;	
-	    case 3:
-	        employeeManagement.updateEmployee();
-		break;
-	    case 4:
-	        employeeManagement.deleteEmployee();
-		break;
-	    case 5:
-	        employeeManagement.displayAll();
-	        break;
-	    case 6:
-	        System.out.println("Thank you");
-	        break;
-	    default:
-	        System.out.println("Please enter a valid option");
-	} 	 
-    }
 }
