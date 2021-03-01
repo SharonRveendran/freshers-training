@@ -3,7 +3,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Scanner;
 
@@ -193,14 +192,12 @@ public class EmployeeManagement {
      * @return  mobile number
      */
     private long getMobile() {
-    	Pattern pattern = Pattern.compile("(0/91)?[7-9][0-9]{9}");
     	String input;
     	long mobile;
     	System.out.println("Enter mobile");
     	do {  	
     	    input = scanner.nextLine();
-    	    Matcher matcher = pattern.matcher(input);
-    	    if (matcher.find() && matcher.group().equals(input)) {
+    	    if (Pattern.matches("[7-9][0-9]{9}", input)) {
     	    	mobile = Long.parseLong(input);
     	    	return mobile;
     	    } else {
@@ -303,19 +300,18 @@ public class EmployeeManagement {
      * @param id the employee id
      */
     private void updateMobile(int id) {
-    	Pattern pattern = Pattern.compile("(0/91)?[7-9][0-9]{9}");
     	String input;
     	long mobile;
         Employee employee = employees.get(id);
         System.out.println("Enter new mobile number");
         do {  	    
             input = scanner.nextLine();
-     	    Matcher matcher = pattern.matcher(input);
-     	    if (matcher.find() && matcher.group().equals(input)) {
+     	    if (Pattern.matches("[7-9][0-9]{9}", input)) {
      	    	mobile = Long.parseLong(input);
                 employee.setMobile(mobile); 
      	    } else {
      	    	mobile = 0;
+     	    	System.out.println("Enter valid mobile number");
      	    }
         } while (0 == mobile);
     }
