@@ -17,7 +17,8 @@ public class Employee {
     private String designation;
     private long salary;  
     
-    public Employee(String name, String designation, long salary, int id, long mobile, Date dob) {
+    public Employee(String name, String designation,
+    		long salary, int id, long mobile, Date dob) {
     	this.id = id;
         this.name = name;
         this.dob = dob;
@@ -75,10 +76,10 @@ public class Employee {
     } 
 	
     public String toString() {
-    	return "\nEmployee Id          =  " + id + "\nEmployee Name        =  "
-                + name + "\nEmployee Designation =  " + designation
-    		+ "\nEmployee Salary      =  " + salary
-    		+"\nMobile               =  " + mobile + "\nDate of Birth        =  "
+    	return "\nEmployee Id             =  " + id + "\nEmployee Name           =  "
+                + name + "\nEmployee Designation    =  " + designation
+    		+ "\nEmployee Salary         =  " + salary
+    		+"\nEmployee Mobile         =  " + mobile + "\nEmployee Date of Birth  =  "
     		+ new SimpleDateFormat("dd/mm/yyy").format(dob) + "\n";
     }
 }
