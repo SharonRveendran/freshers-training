@@ -1,7 +1,5 @@
 package com.ideas2it.employeemanagement.view;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
 import java.util.Scanner;
@@ -12,7 +10,7 @@ import com.ideas2it.employeemanagement.model.Employee;
 /**
  * Class for Employee view
  * @author Sharon V
- * @created 01-03-2021
+ * @created 02-03-2021
  */
 public class EmployeeView {
     Scanner scanner = new Scanner(System.in);
@@ -29,9 +27,9 @@ public class EmployeeView {
 	int option = 0;
 	do {
             System.out.println(message);
-            try {
-	        option = Integer.parseInt(scanner.nextLine());    	    
-    	    } catch (NumberFormatException e) {
+	    try {
+                option = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
                 option = 7;
     	    }
 	    start(option, message);
@@ -53,7 +51,7 @@ public class EmployeeView {
    		break;	
    	    case 3:
    	        updateEmployee();
-   	        break;
+   		break;
    	    case 4:
    	        deleteEmployee();
    		break;
@@ -65,27 +63,19 @@ public class EmployeeView {
    	        break;
    	    default:
    	        System.out.println("Please enter a valid option");
-        } 	 
+   	} 	 
     }
     
     /**
      * Method to create employee
      */
     private void createEmployee() {
-    	long salary ;
+        long salary ;
     	System.out.println("Enter name");
     	String name = scanner.nextLine();
     	System.out.println("Enter designation");
     	String designation = scanner.nextLine();
-    	System.out.println("Enter salary");
-    	do {  	    
-    	    try {
-    	        salary = Long.parseLong(scanner.nextLine());
-    	    } catch (NumberFormatException e) {
-    	        System.out.println("Please enter a valid salary");
-    		salary = 0;	    
-    	    }
-    	} while (0 == salary);
+    	salary = isValidSalary();
     	long mobile = getMobile();
     	Date dob = getDob();
     	if (employeeController.createEmployee(name, designation, salary, mobile, dob)) {
@@ -98,40 +88,24 @@ public class EmployeeView {
      * @return Employee mobile number
      */
     private long getMobile() {
-    	String input;
-    	long mobile;
-    	System.out.println("Enter mobile");
-    	do {  	
-    	    input = scanner.nextLine();
-    	    if (Pattern.matches("[7-9][0-9]{9}", input)) {
-    	        mobile = Long.parseLong(input);
-    	    	return mobile;
-    	    } else {
-    	    	mobile = 0;
-    	    	System.out.println("Enter valid mobile number");
-    	    }
-    	} while (0 == mobile);
-    	return 0;
+    	return isValidMobile();
     }
+	
     /**
      * Method to get the date of birth of employee
      * @return Employee date of birth
      */
     private Date getDob() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
-        Date dob = null;
-   	String date;
-   	System.out.println("Enter new date in given format dd/mm/yyyy");
-	do {
-	    date = scanner.nextLine();
-	    try {
-	        dob = sdf.parse(date);
-	    } catch (ParseException e) {
-		System.out.println("Enter a valid date ");
-		date = "invalidDate";
+        String date;
+        System.out.println("Enter new date in given format dd/mm/yyyy");      
+        do {
+            date = scanner.nextLine();
+	    if (null == employeeController.isValidDate(date)) { 
+	        System.out.println("Enter a valid date");
+	        date = "invalidDate";
             }
-	} while ("invalidDate".equals(date));	  
-	return dob;
+        } while("invalidDate".equals(date));
+        return employeeController.isValidDate(date);
     }
     
     /**
@@ -139,36 +113,35 @@ public class EmployeeView {
      */
     private void readEmployee() {
         int id;
-    	System.out.println("Enter the employee id");
+        System.out.println("Enter the employee id");
     	do {  	    
     	    try {
     	        id = Integer.parseInt(scanner.nextLine());
     	        if (0 == id) {
-    	        	throw new NumberFormatException();
+    	            throw new NumberFormatException();
     	        }
     	    } catch (NumberFormatException e) {
-    		    System.out.println("Please enter a valid employee id");
-    		    id = 0;
+    		System.out.println("Please enter a valid employee id");
+    		id = 0;
     	    }
     	} while (0 == id);
     	Employee employee = employeeController.readEmployee(id);
     	if(null == employee) {
-    		System.out.println("No employee present with the given id...");
+    	    System.out.println("No employee present with the given id...");
     	} else {
-    		System.out.println(employee);
+    	    System.out.println(employee);
     	}
     }
-    
     /**
      * Method to update the employee details
      */
     private void updateEmployee() {
-	int option;
+        int option;
     	System.out.println("Enter employee id"); 
     	int id = isValidId() ;
     	if (employeeController.isIdExist(id)) {	
     	    String message = "What you want to update\n1 : Name\n"
-        	        + "2 : Designation\n3 : Salary\n4 : DOB\n5 : Mobile";
+                    + "2 : Designation\n3 : Salary\n4 : DOB\n5 : Mobile";
             System.out.println(message);
     	    option = isValidOption();
     	    switch (option) {
@@ -188,18 +161,17 @@ public class EmployeeView {
     	    	   updateMobile(id);
     	    }
     	} else {
-    		System.out.println("No employee present with the given id....");
+    	    System.out.println("No employee present with the given id....");
     	}		
     }
-
     /**
      * This method will validate the option
      */
     private int isValidOption() {
-   	int option;
-   	 do {
-	     try {	    
- 	         option = Integer.parseInt(scanner.nextLine());
+        int option;
+   	do {
+	    try {	    
+ 	        option = Integer.parseInt(scanner.nextLine());
  	         if(option > 5) {
  	             throw new  NumberFormatException();
  	         }
@@ -217,7 +189,7 @@ public class EmployeeView {
      */
     private int isValidId() {
         int id;
-    	do {
+        do {
     	    try {
  	        id = Integer.parseInt(scanner.nextLine());
  	        if (0 == id) {
@@ -239,10 +211,11 @@ public class EmployeeView {
     private void updateName(int id) {
     	System.out.println("Enter new Name");
         String employeeName = scanner.nextLine();
-        if(employeeController.updateName(id, employeeName)) {
-        	System.out.println("Employee name updated successfully....");
+        if(employeeController.isIdPresent(id)) {
+            employeeController.updateName(id, employeeName);
+            System.out.println("Employee name updated successfully....");
         } else {
-        	System.out.println("No employee present with the given id");
+            System.out.println("No employee present with the given id");
         }  
     }
     
@@ -262,9 +235,18 @@ public class EmployeeView {
      * @param id the employee id
      */
     private void updateSalary(int id) {
+    	long employeeSalary = isValidSalary();
+        employeeController.updateSalary(id, employeeSalary);
+        System.out.println("\n Salary updated successfully...");
+    }
+    
+    /**
+     * Method to validate Employee salary
+     */
+    private long isValidSalary() {
+    	System.out.println("Enter Salary");
     	long employeeSalary;
-    	System.out.println("Enter new Salary");
-        do {  	    
+    	do {  	    
             try {
                employeeSalary = Long.parseLong(scanner.nextLine());          
             } catch (NumberFormatException e) {
@@ -272,8 +254,7 @@ public class EmployeeView {
                 employeeSalary = 0;
             }
         } while (0 == employeeSalary);
-        employeeController.updateSalary(id, employeeSalary);
-        System.out.println("\n Salary updated successfully...");
+    	return employeeSalary;
     }
     
     /**
@@ -281,21 +262,17 @@ public class EmployeeView {
      * @param id the employee id
      */
     private void updateDob(int id) {
-    	Date dob = null;
-    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
     	System.out.println("Enter new date in given format dd/mm/yyyy");
     	String date;
-	    do {
-		date =scanner.nextLine();
-		try {
-	            dob =sdf.parse(date);
-		} catch (ParseException e) {
-		    System.out.println("Enter a valid date ");
-		    date = "invalidDate";
-		}
-            } while ("invalidDate".equals(date));
-            employeeController.updateDob(id, dob);
-            System.out.println("Date of birth updated successfully....");
+    	do {
+            date = scanner.nextLine();
+	    if (null == employeeController.isValidDate(date)) { 
+                System.out.println("Enter a valid date");
+	        date = "invalidDate";
+            }
+        } while("invalidDate".equals(date));
+	employeeController.updateDob(id,  employeeController.isValidDate(date));
+	System.out.println("Date of birth updated successfully....");
     }
     
     /**
@@ -304,34 +281,42 @@ public class EmployeeView {
      */
     private void updateMobile(int id) {
     	String input;
-    	long mobile;
-        System.out.println("Enter new mobile number");
-        do {  	    
-            input = scanner.nextLine();
-     	    if (Pattern.matches("[7-9][0-9]{9}", input)) {
-     	    	mobile = Long.parseLong(input); 
-     	    } else {
-     	    	mobile = 0;
-    	    	System.out.println("Enter valid mobile number");
-     	    }
-        } while (0 == mobile);
+    	long mobile = isValidMobile();
         employeeController.updateMobile(id, mobile);
         System.out.println("Mobile updated successfully....");
     }
     
     /**
+     * Method to validate Employee mobile number
+     */
+    private long isValidMobile() {
+    	long mobile;
+    	System.out.println("Enter new mobile number");
+        do {  	    
+            String input = scanner.nextLine();
+      	    if (Pattern.matches("[7-9][0-9]{9}", input)) {
+      	        mobile = Long.parseLong(input); 
+      	    } else {
+      	    	mobile = 0;
+     	    	System.out.println("Enter valid mobile number");
+      	    }
+         } while (0 == mobile);
+         return mobile;      
+    }
+    
+    /**
      * Method to delete employee based on employee id
      */
-	private void deleteEmployee() {
-	    System.out.println("Enter employee id"); 
-    	    int id = isValidId() ;
-    	    if (employeeController.isIdExist(id)) {
-                employeeController.deleteEmployee(id);
-                System.out.println("Employee deleted Successfully...");
-    	    } else {
+    private void deleteEmployee() {
+        System.out.println("Enter employee id"); 
+    	int id = isValidId() ;
+    	if (employeeController.isIdExist(id)) {
+            employeeController.deleteEmployee(id);
+            System.out.println("Employee deleted Successfully...");
+    	} else {
     		System.out.println("No employee present with the given id....");
-    	    }
-	}
+    	}
+    }
     
     /**
      * Method to display all employee details present in collection
@@ -340,5 +325,5 @@ public class EmployeeView {
         if(employeeController.displayAll()) {
 	    System.out.println("No employee present in database");
 	}
-    }
+    }		
 }

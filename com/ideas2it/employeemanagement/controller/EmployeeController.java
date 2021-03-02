@@ -42,8 +42,8 @@ public class EmployeeController {
      * @param employeeName Name of employee
      * @return true for successful updation of name else return false
      */
-    public boolean updateName(int id, String employeeName) {
-    	return employeeService.updateName(id, employeeName);
+    public void updateName(int id, String employeeName) {
+    	employeeService.updateEmployee(id, employeeName, 0l, null);
     }
     
     /**
@@ -61,7 +61,7 @@ public class EmployeeController {
      * @param designation Employee Designation
      */
     public void updateDesignation(int id, String designation) {
-    	employeeService.updateDesignation(id, designation);
+    	employeeService.updateEmployee(id, designation, 1l,null);
     }
     
     /**
@@ -70,7 +70,7 @@ public class EmployeeController {
      * @param employeeSalary Salary of Employee
      */
     public void updateSalary(int id, long employeeSalary) {
-    	employeeService.updateSalary(id, employeeSalary);
+    	employeeService.updateEmployee(id, "salary", employeeSalary, null);
     }
     
     /**
@@ -79,7 +79,7 @@ public class EmployeeController {
      * @param dob Employee date of birth
      */
     public void updateDob(int id, Date dob) {
-    	employeeService.updateDob(id, dob);
+    	employeeService.updateEmployee(id, "dob", 2l, dob);
     }
     
     /**
@@ -88,7 +88,7 @@ public class EmployeeController {
      * @param mobile Employee mobile number
      */
     public void updateMobile(int id, long mobile) {
-    	employeeService.updateMobile(id, mobile);
+    	employeeService.updateEmployee(id, "mobile", mobile, null);
     }
     
     /**
@@ -105,5 +105,21 @@ public class EmployeeController {
      */
     public boolean displayAll() {
     	return employeeService.displayAll();
+    }
+    
+    /**
+     * Method to validate date
+     * @param date User given date string
+     * @return valid date
+     */
+    public Date isValidDate(String date) {
+    	return employeeService.isValidDate(date);
+    }
+    
+    /**
+     * Methode to check the id present in collection or not
+     */
+    public boolean isIdPresent(int id) {
+    	return employeeService.isIdPresent(id);
     }
 }

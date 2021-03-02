@@ -1,5 +1,7 @@
 package com.ideas2it.employeemanagement.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,13 +27,13 @@ public class EmployeeService {
      * @return  true for successful insertion and false for insertion failure
      */
     public boolean createEmployee(String name, String designation
-    		,long salary, long mobile, Date dob) {
-    	id++;
+            ,long salary, long mobile, Date dob) {
+        id++;
     	Employee employee = new Employee(name, designation, salary, id, mobile, dob);
     	if (null == employees.put(id, employee)) {
-    		return true;
+    	    return true;
     	} else {
-    		return false;
+    	    return false;
     	}
     }
     
@@ -42,27 +44,38 @@ public class EmployeeService {
      */
     public Employee readEmployee(int id) {
     	if (null == employees.get(id)) {
-    		return null;
+    	    return null;
     	} else {
-    	return employees.get(id);
+    	    return employees.get(id);
     	}
     }
     
     /**
-     * Method to update the employee name
+     * Methode to update all employee details
      * @param id Employee id
-     * @param employeeName Name of employee
-     * @return true for successful updation else return false
+     * @param employeeDetail1 employee details include name and designation of employee
+     * @param employeeDetails2 employee details include salary and mobile of employee
+     * @param employeeDetails3 Date of birth of employee
      */
-    public boolean updateName(int id, String employeeName) {
-    	if (null == employees.get(id)) {
-    		return false;
-    	} else {
-    		employees.get(id).setName(employeeName);
-    		return true;
+    public void updateEmployee(int id, String employeeDetail1,
+            long employeeDetail2, Date employeedetail3) {
+    	if (0l == employeeDetail2) {
+    	     employees.get(id).setName(employeeDetail1);
+    	}
+    	if (1l == employeeDetail2) {
+    	    (employees.get(id)).setDesignation(employeeDetail1);
+    	}
+    	if ("salary".equals(employeeDetail1)) {
+    	    (employees.get(id)).setSalary(employeeDetail2);
+    	}
+    	if ("dob".equals(employeeDetail1)) {
+    	    (employees.get(id)).setDob(employeedetail3);
+    	}
+    	if ("mobile".equals(employeeDetail1)) {
+    	    (employees.get(id)).setMobile(employeeDetail2);
     	}
     }
-    
+   
     /**
      * Method to check whether the id is present in collection or not 
      * @param id Employee id
@@ -70,48 +83,12 @@ public class EmployeeService {
      */
     public boolean isIdExist(int id) {
     	if (null == employees.get(id)) {
-    		return false;
+    	    return false;
     	} else {
-    		return true;
+    	    return true;
     	}
     }
-    
-    /**
-     * Method to update Employee designation
-     * @param id Employee id
-     * @param designation Employee Designation
-     */
-    public void updateDesignation(int id, String designation) {
-    	(employees.get(id)).setDesignation(designation);
-    }
-    
-    /**
-     * Method to update Employee salary
-     * @param id Employee id
-     * @param employeeSalary Salary of Employee
-     */
-    public void updateSalary(int id, long employeeSalary) {
-    	(employees.get(id)).setSalary(employeeSalary);
-    }
-    
-    /**
-     * Method to update Employee date of birth
-     * @param id Employee id
-     * @param dob Employee date of birth
-     */
-    public void updateDob(int id, Date dob) {
-    	(employees.get(id)).setDob(dob);
-    }
-    
-    /**
-     * Method to update employee mobile number
-     * @param id Employee id
-     * @param mobile Employee mobile number
-     */
-    public void updateMobile(int id, long mobile) {
-    	(employees.get(id)).setMobile(mobile);
-    }
-    
+     
     /**
      * Method to delete the Employee based on employee id
      * @param id Employee id
@@ -126,10 +103,39 @@ public class EmployeeService {
      */
     public boolean displayAll() {
     	if (0 == employees.size()) {
-    		return true;
+    	    return true;
     	} else {
-    		employees.forEach((id,employee) -> System.out.println(employee));
-    		return false;
+    	    employees.forEach((id,employee) -> System.out.println(employee));
+    	    return false;
+    	}
+    }
+    
+    /**
+     * Method to validate date
+     * @param date
+     * @return valid date
+     */
+    public Date isValidDate(String date) {
+    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	Date dob = null;
+        try {
+	    dob = simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
+        return dob;
+    }
+    
+    /**
+     * Method to check whether the id is present in collection
+     * @param id Employee id
+     * @return true if id present else false
+     */
+    public boolean isIdPresent(int id) {
+	if (null == employees.get(id)) {
+    	    return false;
+    	} else {
+    	    return true;
     	}
     }
 }
