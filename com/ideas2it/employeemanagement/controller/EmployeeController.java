@@ -1,8 +1,8 @@
 package com.ideas2it.employeemanagement.controller;
 
 import java.util.Date;
+import java.util.List;
 
-import com.ideas2it.employeemanagement.model.Employee;
 import com.ideas2it.employeemanagement.service.EmployeeService;
 
 /**
@@ -23,17 +23,17 @@ public class EmployeeController {
      * @return true for successful creation else return false
      */
     public boolean createEmployee(String name, String designation
-    		,long salary, long mobile, Date dob) {
+    		, long salary, long mobile, Date dob) {
     	return employeeService.createEmployee(name, designation, salary, mobile, dob);
     }
     
     /**
-     * Method to read the employee based on employee id
+     * Method to display the employee based on employee id
      * @param id Employee id
      * @return Employee 
      */
-    public Employee readEmployee(int id) {
-    	return employeeService.readEmployee(id);
+    public String displayEmployee(int id) {
+    	return employeeService.displayEmployee(id);
     }
     
     /**
@@ -43,7 +43,7 @@ public class EmployeeController {
      * @return true for successful updation of name else return false
      */
     public void updateName(int id, String employeeName) {
-    	employeeService.updateEmployee(id, employeeName, 0l, null);
+    	employeeService.updateEmployee(id, employeeName, null, 0l, null, 0l, "name");
     }
     
     /**
@@ -61,7 +61,8 @@ public class EmployeeController {
      * @param designation Employee Designation
      */
     public void updateDesignation(int id, String designation) {
-    	employeeService.updateEmployee(id, designation, 1l,null);
+    	employeeService.updateEmployee(id, null, designation
+                , 0l, null, 0l, "designation");
     }
     
     /**
@@ -70,7 +71,8 @@ public class EmployeeController {
      * @param employeeSalary Salary of Employee
      */
     public void updateSalary(int id, long employeeSalary) {
-    	employeeService.updateEmployee(id, "salary", employeeSalary, null);
+    	employeeService.updateEmployee(id, null, null,
+                employeeSalary, null, 0l, "salary");
     }
     
     /**
@@ -79,7 +81,7 @@ public class EmployeeController {
      * @param dob Employee date of birth
      */
     public void updateDob(int id, Date dob) {
-    	employeeService.updateEmployee(id, "dob", 2l, dob);
+    	employeeService.updateEmployee(id, null, null, 0l, dob, 0l, "dob");
     }
     
     /**
@@ -88,7 +90,7 @@ public class EmployeeController {
      * @param mobile Employee mobile number
      */
     public void updateMobile(int id, long mobile) {
-    	employeeService.updateEmployee(id, "mobile", mobile, null);
+    	employeeService.updateEmployee(id, null, null, 0l, null, mobile, "name");
     }
     
     /**
@@ -103,7 +105,7 @@ public class EmployeeController {
      * Method to display all employee present in collection
      * @return false if collection is empty else return true
      */
-    public boolean displayAll() {
+    public List<String> displayAll() {
     	return employeeService.displayAll();
     }
     
@@ -114,12 +116,5 @@ public class EmployeeController {
      */
     public Date isValidDate(String date) {
     	return employeeService.isValidDate(date);
-    }
-    
-    /**
-     * Methode to check the id present in collection or not
-     */
-    public boolean isIdPresent(int id) {
-    	return employeeService.isIdPresent(id);
     }
 }

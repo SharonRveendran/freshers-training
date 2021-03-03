@@ -2,8 +2,10 @@ package com.ideas2it.employeemanagement.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.ideas2it.employeemanagement.model.Employee;
@@ -30,11 +32,7 @@ public class EmployeeService {
             ,long salary, long mobile, Date dob) {
         id++;
     	Employee employee = new Employee(name, designation, salary, id, mobile, dob);
-    	if (null == employees.put(id, employee)) {
-    	    return true;
-    	} else {
-    	    return false;
-    	}
+        return ((null == employees.put(id, employee)) ? true :false);
     }
     
     /**
@@ -42,12 +40,12 @@ public class EmployeeService {
      * @param id Employee id
      * @return employee object if employee present else return null
      */
-    public Employee readEmployee(int id) {
-    	if (null == employees.get(id)) {
-    	    return null;
-    	} else {
-    	    return employees.get(id);
-    	}
+    public String displayEmployee(int id) {
+        if (!isIdExist(id)) {
+            return null;
+        } else {
+            return (employees.get(id)).toString();
+        }
     }
     
     /**
@@ -57,22 +55,22 @@ public class EmployeeService {
      * @param employeeDetails2 employee details include salary and mobile of employee
      * @param employeeDetails3 Date of birth of employee
      */
-    public void updateEmployee(int id, String employeeDetail1,
-            long employeeDetail2, Date employeedetail3) {
-    	if (0l == employeeDetail2) {
-    	     employees.get(id).setName(employeeDetail1);
+    public void updateEmployee(int id, String name, String designation,
+            long salary, Date dob, long mobile, String option) {
+    	if ("name".equals(option)) {
+    	     employees.get(id).setName(name);
     	}
-    	if (1l == employeeDetail2) {
-    	    (employees.get(id)).setDesignation(employeeDetail1);
+    	if ("designation".equals(option)) {
+    	    (employees.get(id)).setDesignation(designation);
     	}
-    	if ("salary".equals(employeeDetail1)) {
-    	    (employees.get(id)).setSalary(employeeDetail2);
+    	if ("salary".equals(option)) {
+    	    (employees.get(id)).setSalary(salary);
     	}
-    	if ("dob".equals(employeeDetail1)) {
-    	    (employees.get(id)).setDob(employeedetail3);
+    	if ("dob".equals(option)) {
+    	    (employees.get(id)).setDob(dob);
     	}
-    	if ("mobile".equals(employeeDetail1)) {
-    	    (employees.get(id)).setMobile(employeeDetail2);
+    	if ("mobile".equals(option)) {
+    	    (employees.get(id)).setMobile(mobile);
     	}
     }
    
@@ -82,11 +80,7 @@ public class EmployeeService {
      * @return true if id present in collection else return false
      */
     public boolean isIdExist(int id) {
-    	if (null == employees.get(id)) {
-    	    return false;
-    	} else {
-    	    return true;
-    	}
+        return ((null == employees.get(id)) ? false : true);
     }
      
     /**
@@ -99,15 +93,14 @@ public class EmployeeService {
     
     /**
      * Method to display all employee present in collection
-     * @return false if collection is empty else return true
+     * @return collection of employeeObject
      */
-    public boolean displayAll() {
-    	if (0 == employees.size()) {
-    	    return true;
-    	} else {
-    	    employees.forEach((id,employee) -> System.out.println(employee));
-    	    return false;
-    	}
+    public List<String> displayAll() {
+        List<String> employeeDetails = new ArrayList<String>();
+        for(Employee employee : employees.values()) {
+                employeeDetails.add(employee.toString());
+            }
+    	return employeeDetails;
     }
     
     /**
@@ -124,18 +117,5 @@ public class EmployeeService {
             return null;
         }
         return dob;
-    }
-    
-    /**
-     * Method to check whether the id is present in collection
-     * @param id Employee id
-     * @return true if id present else false
-     */
-    public boolean isIdPresent(int id) {
-	if (null == employees.get(id)) {
-    	    return false;
-    	} else {
-    	    return true;
-    	}
     }
 }
