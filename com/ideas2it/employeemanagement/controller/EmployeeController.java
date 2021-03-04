@@ -8,7 +8,7 @@ import com.ideas2it.employeemanagement.service.EmployeeService;
 /**
  * Class for Employee controller
  * @author Sharon V
- * @created 01-03-2021
+ * @created 04-03-2021
  */
 public class EmployeeController {
     EmployeeService employeeService = new EmployeeService();
@@ -28,12 +28,12 @@ public class EmployeeController {
     }
     
     /**
-     * Method to display the employee based on employee id
+     * Method to get the employee details based on employee id
      * @param id Employee id
      * @return Employee 
      */
-    public String displayEmployee(int id) {
-    	return employeeService.displayEmployee(id);
+    public String getEmployee(int id) {
+    	return employeeService.getEmployee(id);
     }
     
     /**
@@ -102,11 +102,11 @@ public class EmployeeController {
     }
 
     /**
-     * Method to display all employee present in collection
-     * @return false if collection is empty else return true
+     * Method to return all employee details present in collection
+     * @return all employee delails
      */
-    public List<String> displayAll() {
-    	return employeeService.displayAll();
+    public List<String> getAll() {
+    	return employeeService.getAll();
     }
     
     /**
@@ -116,5 +116,32 @@ public class EmployeeController {
      */
     public Date isValidDate(String date) {
     	return employeeService.isValidDate(date);
+    }
+
+    /**
+     * Method to validate mobile number
+     * @param input user given number
+     * @return Mobile number
+     */
+    public long isValidMobile(String input) {
+        return employeeService.isValidMobile(input);
+    }
+    
+    /**
+     * Method to validate employee salary.
+     * @param input user given salary
+     * @return valid salary
+     */
+     public long isValidSalary(String input) {
+         return employeeService.isValidSalary(input);
+     }
+     
+    /**
+     * This method will validate employee id
+     * @param id employee id
+     * @return valid employee id
+     */
+    public int isValidId(String id) {
+        return employeeService.isValidId(id);
     }
 }

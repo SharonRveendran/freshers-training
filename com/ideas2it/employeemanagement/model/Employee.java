@@ -7,7 +7,7 @@ import java.util.Date;
  * POJO class for employee providing id,
  * name, designation & salary. 
  * @author Sharon
- * @created 01-03-2021
+ * @created 04-03-2021
  */
 public class Employee {
     private int id;

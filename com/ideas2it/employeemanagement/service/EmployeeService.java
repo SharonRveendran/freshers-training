@@ -7,13 +7,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.ideas2it.employeemanagement.model.Employee;
 
 /**
  * Class for Employee service
  * @author Sharon V
- * @created 01-03-2021
+ * @created 04-03-2021
  */
 public class EmployeeService {
     Map<Integer, Employee> employees = new HashMap<Integer, Employee>();
@@ -36,11 +37,11 @@ public class EmployeeService {
     }
     
     /**
-     * Method to read employee based on id
+     * Method to return employee details based on employee id
      * @param id Employee id
      * @return employee object if employee present else return null
      */
-    public String displayEmployee(int id) {
+    public String getEmployee(int id) {
         if (!isIdExist(id)) {
             return null;
         } else {
@@ -92,10 +93,10 @@ public class EmployeeService {
     }
     
     /**
-     * Method to display all employee present in collection
-     * @return collection of employeeObject
+     * Method to return all employee details present in collection
+     * @return list of employee details
      */
-    public List<String> displayAll() {
+    public List<String> getAll() {
         List<String> employeeDetails = new ArrayList<String>();
         for(Employee employee : employees.values()) {
                 employeeDetails.add(employee.toString());
@@ -117,5 +118,51 @@ public class EmployeeService {
             return null;
         }
         return dob;
+    }
+ 
+    /**
+     * Methode to validate mobile number
+     * @param input user given input for mobile
+     * @return valid mobile number
+     */
+    public long isValidMobile(String input) {
+        if (Pattern.matches("[7-9][0-9]{9}", input)) {
+      	    long mobile = Long.parseLong(input); 
+            return mobile;
+      	} else {
+      	   return 0l;
+      	}
+    }
+    /** 
+     * This methode will validate employee salary
+     * @param input user given input for salary
+     * @return valid employee salary
+     */
+    public long isValidSalary(String input) {
+        long employeeSalary;
+        try {
+            employeeSalary = Long.parseLong(input);          
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+        return employeeSalary;
+    }
+
+    /**
+     * This method will validate employee id
+     * @param id employee id
+     * @return valid employee id
+     */
+    public int isValidId(String id) {
+        int validId;
+        try {
+ 	    validId = Integer.parseInt(id);
+ 	    if (0 == validId) {
+ 	        throw new NumberFormatException();
+ 	    }  
+    	} catch (NumberFormatException e) {
+            return 0;
+ 	}
+        return validId;
     }
 }
