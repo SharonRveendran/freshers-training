@@ -1,5 +1,6 @@
 package com.ideas2it.employeemanagement.service;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,14 +11,16 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.ideas2it.employeemanagement.model.Employee;
+import com.ideas2it.employeemanagement.dao.impl.EmployeeDaoImpl;
 
 /**
  * Class for Employee service
  * @author Sharon V
- * @created 04-03-2021
+ * @created 08-03-2021
  */
 public class EmployeeService {
     Map<Integer, Employee> employees = new HashMap<Integer, Employee>();
+    EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
     int id = 0;
 	
     /**
@@ -30,10 +33,10 @@ public class EmployeeService {
      * @return  true for successful insertion and false for insertion failure
      */
     public boolean createEmployee(String name, String designation
-            ,long salary, long mobile, Date dob) {
+            ,long salary, long mobile, Date dob) throws ClassNotFoundException, SQLException {
         id++;
     	Employee employee = new Employee(name, designation, salary, id, mobile, dob);
-        return ((null == employees.put(id, employee)) ? true :false);
+        return employeeDao.insertEmployee(employee);
     }
     
     /**
@@ -41,38 +44,28 @@ public class EmployeeService {
      * @param id Employee id
      * @return employee object if employee present else return null
      */
-    public String getEmployee(int id) {
-        if (!isIdExist(id)) {
+    public String getEmployee(int id) throws ClassNotFoundException, SQLException {
+        if (null == employeeDao.getEmployee(id)) {
             return null;
         } else {
-            return (employees.get(id)).toString();
+            return (employeeDao.getEmployee(id)).toString();
         }
     }
     
     /**
-     * Methode to update all employee details
+     * Methode to update employee details
      * @param id Employee id
-     * @param employeeDetail1 employee details include name and designation of employee
-     * @param employeeDetails2 employee details include salary and mobile of employee
-     * @param employeeDetails3 Date of birth of employee
+     * @param name employee name
+     * @param designation employee designation
+     * @param salary employee salary
+     * @param dob employee date of birth
+     * @param mobile employee mobile number
+     * @param option option to specify the attribute that need to update
      */
     public void updateEmployee(int id, String name, String designation,
-            long salary, Date dob, long mobile, String option) {
-    	if ("name".equals(option)) {
-    	     employees.get(id).setName(name);
-    	}
-    	if ("designation".equals(option)) {
-    	    (employees.get(id)).setDesignation(designation);
-    	}
-    	if ("salary".equals(option)) {
-    	    (employees.get(id)).setSalary(salary);
-    	}
-    	if ("dob".equals(option)) {
-    	    (employees.get(id)).setDob(dob);
-    	}
-    	if ("mobile".equals(option)) {
-    	    (employees.get(id)).setMobile(mobile);
-    	}
+            long salary, Date dob, long mobile, String option)
+                    throws ClassNotFoundException, SQLException {
+    	employeeDao.updateEmployee(id, name, designation, salary, dob, mobile, option);
     }
    
     /**
@@ -80,27 +73,32 @@ public class EmployeeService {
      * @param id Employee id
      * @return true if id present in collection else return false
      */
-    public boolean isIdExist(int id) {
-        return ((null == employees.get(id)) ? false : true);
+    public boolean isIdExist(int id) throws ClassNotFoundException, SQLException {
+        return ((null == employeeDao.getEmployee(id)) ? false : true);
     }
      
     /**
      * Method to delete the Employee based on employee id
      * @param id Employee id
      */
-    public void deleteEmployee(int id) {
-    	employees.remove(id);
+    public void deleteEmployee(int id) throws ClassNotFoundException, SQLException {
+    	employeeDao.deleteEmployee(id);
     }
     
     /**
      * Method to return all employee details present in collection
      * @return list of employee details
      */
-    public List<String> getAll() {
+    public List<String> getAll() throws SQLException, ClassNotFoundException {
+        int id = 1; 
+        Employee employee;
         List<String> employeeDetails = new ArrayList<String>();
-        for(Employee employee : employees.values()) {
+        do {
+            employee = employeeDao.getEmployee(id++);
+            if (null != employee) {
                 employeeDetails.add(employee.toString());
             }
+        } while (null != employee);
     	return employeeDetails;
     }
     
@@ -110,7 +108,7 @@ public class EmployeeService {
      * @return valid date
      */
     public Date isValidDate(String date) {
-    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     	Date dob = null;
         try {
 	    dob = simpleDateFormat.parse(date);
@@ -126,12 +124,17 @@ public class EmployeeService {
      * @return valid mobile number
      */
     public long isValidMobile(String input) {
+        long mobile;
         if (Pattern.matches("[7-9][0-9]{9}", input)) {
-      	    long mobile = Long.parseLong(input); 
-            return mobile;
+       	    try {
+                mobile = Long.parseLong(input); 
+            } catch (NumberFormatException e) {
+                return 0;
+            }
       	} else {
-      	   return 0l;
+      	   return 0;
       	}
+        return mobile;
     }
     /** 
      * This methode will validate employee salary
@@ -154,15 +157,12 @@ public class EmployeeService {
      * @return valid employee id
      */
     public int isValidId(String id) {
-        int validId;
+        int employeeId;
         try {
- 	    validId = Integer.parseInt(id);
- 	    if (0 == validId) {
- 	        throw new NumberFormatException();
- 	    }  
+ 	    employeeId = Integer.parseInt(id); 
     	} catch (NumberFormatException e) {
             return 0;
  	}
-        return validId;
+        return employeeId;
     }
 }

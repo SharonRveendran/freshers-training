@@ -7,7 +7,7 @@ import java.util.Date;
  * POJO class for employee providing id,
  * name, designation & salary. 
  * @author Sharon
- * @created 04-03-2021
+ * @created 09-03-2021
  */
 public class Employee {
     private int id;
@@ -80,6 +80,6 @@ public class Employee {
                 + name + "\nEmployee Designation    =  " + designation
     		+ "\nEmployee Salary         =  " + salary
     		+"\nEmployee Mobile         =  " + mobile + "\nEmployee Date of Birth  =  "
-    		+ new SimpleDateFormat("dd/mm/yyy").format(dob) + "\n";
+    		+ new SimpleDateFormat("dd-MM-yyyy").format(dob) + "\n";
     }
 }

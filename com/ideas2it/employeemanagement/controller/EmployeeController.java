@@ -1,5 +1,6 @@
 package com.ideas2it.employeemanagement.controller;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import com.ideas2it.employeemanagement.service.EmployeeService;
 /**
  * Class for Employee controller
  * @author Sharon V
- * @created 04-03-2021
+ * @created 09-03-2021
  */
 public class EmployeeController {
     EmployeeService employeeService = new EmployeeService();
@@ -22,8 +23,8 @@ public class EmployeeController {
      * @param dob  Employee date of birth
      * @return true for successful creation else return false
      */
-    public boolean createEmployee(String name, String designation
-    		, long salary, long mobile, Date dob) {
+    public boolean createEmployee(String name, String designation, long salary,
+            long mobile, Date dob) throws ClassNotFoundException, SQLException {
     	return employeeService.createEmployee(name, designation, salary, mobile, dob);
     }
     
@@ -32,7 +33,7 @@ public class EmployeeController {
      * @param id Employee id
      * @return Employee 
      */
-    public String getEmployee(int id) {
+    public String getEmployee(int id) throws ClassNotFoundException, SQLException {
     	return employeeService.getEmployee(id);
     }
     
@@ -42,7 +43,8 @@ public class EmployeeController {
      * @param employeeName Name of employee
      * @return true for successful updation of name else return false
      */
-    public void updateName(int id, String employeeName) {
+    public void updateName(int id, String employeeName) throws ClassNotFoundException,
+            SQLException {
     	employeeService.updateEmployee(id, employeeName, null, 0l, null, 0l, "name");
     }
     
@@ -51,18 +53,19 @@ public class EmployeeController {
      * @param id Employee id
      * @return true if id present in collection else return false
      */
-    public boolean isIdExist(int id) {
+    public boolean isIdExist(int id) throws ClassNotFoundException, SQLException {
     	return employeeService.isIdExist(id);
     }
     
     /**
      * Method to update Employee designation
      * @param id Employee id
-     * @param designation Employee Designation
+     * @param designation Employee Designation   
      */
-    public void updateDesignation(int id, String designation) {
-    	employeeService.updateEmployee(id, null, designation
-                , 0l, null, 0l, "designation");
+    public void updateDesignation(int id, String designation) 
+            throws ClassNotFoundException,SQLException {
+    	employeeService.updateEmployee(id, null, designation,
+                0l, null, 0l, "designation");
     }
     
     /**
@@ -70,7 +73,8 @@ public class EmployeeController {
      * @param id Employee id
      * @param employeeSalary Salary of Employee
      */
-    public void updateSalary(int id, long employeeSalary) {
+    public void updateSalary(int id, long employeeSalary) throws ClassNotFoundException,
+            SQLException {
     	employeeService.updateEmployee(id, null, null,
                 employeeSalary, null, 0l, "salary");
     }
@@ -80,7 +84,7 @@ public class EmployeeController {
      * @param id Employee id
      * @param dob Employee date of birth
      */
-    public void updateDob(int id, Date dob) {
+    public void updateDob(int id, Date dob) throws ClassNotFoundException, SQLException{
     	employeeService.updateEmployee(id, null, null, 0l, dob, 0l, "dob");
     }
     
@@ -89,15 +93,15 @@ public class EmployeeController {
      * @param id Employee id
      * @param mobile Employee mobile number
      */
-    public void updateMobile(int id, long mobile) {
-    	employeeService.updateEmployee(id, null, null, 0l, null, mobile, "name");
+    public void updateMobile(int id, long mobile) throws ClassNotFoundException, SQLException {
+    	employeeService.updateEmployee(id, null, null, 0l, null, mobile, "mobile");
     }
     
     /**
      * Method to delete the Employee based on employee id
      * @param id Employee id
      */
-    public void deleteEmployee(int id) {
+    public void deleteEmployee(int id) throws ClassNotFoundException, SQLException {
     	employeeService.deleteEmployee(id);
     }
 
@@ -105,7 +109,7 @@ public class EmployeeController {
      * Method to return all employee details present in collection
      * @return all employee delails
      */
-    public List<String> getAll() {
+    public List<String> getAll() throws SQLException, ClassNotFoundException {
     	return employeeService.getAll();
     }
     
@@ -141,7 +145,7 @@ public class EmployeeController {
      * @param id employee id
      * @return valid employee id
      */
-    public int isValidId(String id) {
+    public int isValidId(String id) throws ClassNotFoundException, SQLException {
         return employeeService.isValidId(id);
     }
 }
