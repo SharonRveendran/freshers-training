@@ -1,8 +1,8 @@
 package com.ideas2it.employeemanagement.view;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,7 +12,7 @@ import com.ideas2it.employeemanagement.controller.EmployeeController;
 /**
  * Class for Employee view
  * @author Sharon V
- * @created 08-03-2021
+ * @created 09-03-2021
  */
 public class EmployeeView {
     Constants constants = new Constants();
@@ -23,7 +23,7 @@ public class EmployeeView {
      * This method will collect the input option from user
      * and perfom CRUD operation
      */
-    public void getInput() throws ClassNotFoundException, SQLException {
+    public void getInput() throws SQLException {
     	int id = 0;
 	String option = "0";
         do {
@@ -57,7 +57,7 @@ public class EmployeeView {
     /**
      * Method to create employee
      */
-    private void createEmployee() throws ClassNotFoundException, SQLException {
+    private void createEmployee() throws SQLException {
     	System.out.println(constants.getName);
     	String name = scanner.nextLine();
     	System.out.println(constants.getDesignation);
@@ -91,7 +91,7 @@ public class EmployeeView {
     /**
      * Method to display employee based on employee id
      */
-    private void displayEmployee() throws ClassNotFoundException, SQLException{
+    private void displayEmployee() throws SQLException{
         int id = getAndValidateId();
     	String employeeDetails = employeeController.getEmployee(id);
     	if(null == employeeDetails) {
@@ -103,7 +103,7 @@ public class EmployeeView {
     /**
      * Method to update the employee details
      */
-    private void updateEmployee() throws ClassNotFoundException, SQLException {
+    private void updateEmployee() throws SQLException {
     	int id = getAndValidateId();
     	if (employeeController.isIdExist(id)) {	
             System.out.println(constants.updateOption);
@@ -136,7 +136,7 @@ public class EmployeeView {
      * Method to get and validate the employee id
      * @return employee id
      */
-    private int getAndValidateId() throws ClassNotFoundException, SQLException {
+    private int getAndValidateId() throws SQLException {
         System.out.println(constants.getId);
         String input;
         int id = 0;
@@ -154,7 +154,7 @@ public class EmployeeView {
      * This method will update the employee name
      * @param id the employee id
      */
-    private void updateName(int id) throws ClassNotFoundException, SQLException {
+    private void updateName(int id) throws SQLException {
     	System.out.println(constants.getName);
         String employeeName = scanner.nextLine();
         if(employeeController.isIdExist(id)) {
@@ -169,7 +169,7 @@ public class EmployeeView {
      * This method will update the employee Designation
      * @param id the employee id
      */
-    private void updateDesignation(int id) throws ClassNotFoundException, SQLException {
+    private void updateDesignation(int id) throws SQLException {
     	System.out.println(constants.getDesignation);
         String designation = scanner.nextLine();
         employeeController.updateDesignation(id, designation);
@@ -180,7 +180,7 @@ public class EmployeeView {
      * This method will update the employee Salary
      * @param id the employee id
      */
-    private void updateSalary(int id) throws ClassNotFoundException, SQLException {
+    private void updateSalary(int id) throws SQLException {
     	long employeeSalary = getAndValidateSalary();
         employeeController.updateSalary(id, employeeSalary);
         System.out.println(constants.successfullUpdation);
@@ -207,7 +207,7 @@ public class EmployeeView {
      * This method will update the employee Date of birth
      * @param id the employee id
      */
-    private void updateDob(int id) throws ClassNotFoundException, SQLException {
+    private void updateDob(int id) throws SQLException {
     	System.out.println(constants.getDate);
     	String date;
     	do {
@@ -225,7 +225,7 @@ public class EmployeeView {
      * This method will update the employee Mobile number
      * @param id the employee id
      */
-    private void updateMobile(int id) throws ClassNotFoundException, SQLException {
+    private void updateMobile(int id) throws SQLException {
     	String input;
     	long mobile = getAndValidateMobile();
         employeeController.updateMobile(id, mobile);
@@ -255,7 +255,7 @@ public class EmployeeView {
     /**
      * Method to delete employee based on employee id
      */
-    private void deleteEmployee() throws ClassNotFoundException, SQLException { 
+    private void deleteEmployee() throws SQLException { 
     	int id = getAndValidateId() ;
         if (0 == id) {
             System.out.println(constants.invalidDetails);  
@@ -270,7 +270,7 @@ public class EmployeeView {
     /**
      * Method to display all employee details present in collection
      */
-    private void displayAll() throws SQLException, ClassNotFoundException {
+    private void displayAll() throws SQLException {
         List<String> employees = employeeController.getAll();
         if (0 == employees.size()) {
             System.out.println(constants.noEmployee);

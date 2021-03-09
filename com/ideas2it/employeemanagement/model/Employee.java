@@ -1,7 +1,7 @@
 package com.ideas2it.employeemanagement.model;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * POJO class for employee providing id,
@@ -80,6 +80,6 @@ public class Employee {
                 + name + "\nEmployee Designation    =  " + designation
     		+ "\nEmployee Salary         =  " + salary
     		+"\nEmployee Mobile         =  " + mobile + "\nEmployee Date of Birth  =  "
-    		+ new SimpleDateFormat("dd-MM-yyyy").format(dob) + "\n";
+    		+ dob + "\n";
     }
 }
