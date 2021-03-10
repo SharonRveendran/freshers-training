@@ -24,7 +24,6 @@ public class EmployeeView {
      * and perfom CRUD operation
      */
     public void getInput() throws SQLException {
-    	int id = 0;
 	String option = "0";
         do {
             System.out.println(constants.crudOption); 
@@ -65,12 +64,35 @@ public class EmployeeView {
     	long salary = getAndValidateSalary();
     	long mobile = getAndValidateMobile();
     	Date dob = getDob();
-    	if (employeeController.createEmployee(name
-        	, designation, salary, mobile, dob)) {
+        System.out.println("Provide permanent address details");
+        String permanentAddress[] = getAddress();
+        System.out.println("Provide temporary address details");
+        String temporaryAddress[] = getAddress();
+    	if (employeeController.createEmployee(name, designation, salary, mobile,
+                dob,permanentAddress, temporaryAddress)) {
     	    System.out.println(constants.successfullCreation);
     	}
     }
-	
+     
+    /**
+     * Method to get Address details
+     * @return array of employee address details
+     */
+    private String[] getAddress() { 
+        String address[] = new String[5];    
+        System.out.println("Enter door number");
+        address[0] = scanner.nextLine();
+        System.out.println("Enter street");
+        address[1] = scanner.nextLine();
+        System.out.println("Enter District");
+        address[2] = scanner.nextLine();
+        System.out.println("Enter State");
+        address[3] = scanner.nextLine();
+        System.out.println("Enter Country");
+        address[4] = scanner.nextLine();
+        return address;
+    }
+
     /**
      * Method to get the date of birth of employee
      * @return Employee date of birth
@@ -123,6 +145,9 @@ public class EmployeeView {
     	    	    break;
     	    	case "5":
     	    	   updateMobile(id);
+                   break;
+                case "6":
+    	    	   updateAddress(id);
                    break;
                 default:
                    System.out.println(constants.invalidDetails);
@@ -271,13 +296,25 @@ public class EmployeeView {
      * Method to display all employee details present in collection
      */
     private void displayAll() throws SQLException {
-        List<String> employees = employeeController.getAll();
-        if (0 == employees.size()) {
+        List<String> employeesDetails = employeeController.getAll();
+        if (0 == employeesDetails.size()) {
             System.out.println(constants.noEmployee);
         } else {
-            for(String employeeDetails : employees) {
+            for(String employeeDetails : employeesDetails) {
                 System.out.println(employeeDetails);
             }
         }
+    }
+    /**
+     * Methode to update employee address
+     * @param id employee id
+     */
+    private void updateAddress(int id) throws SQLException {
+        System.out.println("\n What do you want to update ?\n1 : "
+                + "Permanent address\n2 : Temporary address");
+        String option = scanner.nextLine();
+        String addressDetails[] = getAddress();
+        employeeController.updateAddress(id, addressDetails, option);
+        System.out.println(constants.successfullUpdation);
     }		
 }

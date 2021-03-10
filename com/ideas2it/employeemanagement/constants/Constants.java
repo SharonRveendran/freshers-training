@@ -10,7 +10,7 @@ public class Constants {
             + "2 : Read employee\n3 : Update employee\n"
  	    + "4 : Delete employee\n5 : Display all\n6 : Exit\n";
     public final String updateOption = "\nWhat you want to update\n1 : Name\n"
-            + "2 : Designation\n3 : Salary\n4 : DOB\n5 : Mobile\n";  
+            + "2 : Designation\n3 : Salary\n4 : DOB\n5 : Mobile\n6 : Address";  
     public final String getName = "\nEnter Name";
     public final String getDesignation = "\nEnter Designation";
     public final String getDate = "\nEnter date in given format yyyy-mm-dd";

@@ -21,11 +21,15 @@ public class EmployeeController {
      * @param salary  Employee salary
      * @param mobile  Employee mobile number
      * @param dob  Employee date of birth
+     * @param permanentAddress[] array of employee permanent address details
+     * @param temporaryAddress[] array of employee temporary address details
      * @return true for successful creation else return false
      */
-    public boolean createEmployee(String name, String designation, long salary,
-            long mobile, Date dob) throws SQLException {
-    	return employeeService.createEmployee(name, designation, salary, mobile, dob);
+    public boolean createEmployee(String name, String designation,
+            long salary, long mobile,Date dob,String permanentAddress[],
+            String temporaryAddress[]) throws SQLException {
+    	return employeeService.createEmployee(name, designation, salary, mobile,
+                dob, permanentAddress, temporaryAddress);
     }
     
     /**
@@ -145,5 +149,18 @@ public class EmployeeController {
      */
     public int isValidId(String id) throws SQLException {
         return employeeService.isValidId(id);
+    }
+
+    /**
+     * Methode to update address
+     * @param id employee id
+     * @param addressDetails array of address details
+     * @param option user given option for type of address
+     * @param doorNumber
+     * @param street
+     */
+    public void updateAddress(int id, String[] addressDetails,String option)
+            throws SQLException {
+        employeeService.updateAddress(id, addressDetails, option);
     }
 }

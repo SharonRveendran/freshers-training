@@ -22,9 +22,9 @@ public interface EmployeeService {
      * @param dob  Employee Date of birth  
      * @return  true for successful insertion and false for insertion failure
      */
-    public boolean createEmployee(String name, String designation,
-            long salary, long mobile, Date dob) throws ClassNotFoundException, 
-            SQLException;
+   public boolean createEmployee(String name, String designation,
+            long salary, long mobile, Date dob,String permanentAddress[],
+            String temporaryAddress[]) throws SQLException;
     
     /**
      * Method to return employee details based on employee id
@@ -93,4 +93,13 @@ public interface EmployeeService {
      * @return valid employee id
      */
     public int isValidId(String id);
+    
+    /**
+     * Methode to update address
+     * @param id employee id
+     * @param addressDetails array of address details
+     * @param option user given option for type of address
+     */
+    public void updateAddress(int id, String[] addressDetails, String option)
+            throws SQLException ;
 }

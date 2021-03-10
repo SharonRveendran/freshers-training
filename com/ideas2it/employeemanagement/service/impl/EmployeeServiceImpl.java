@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.ideas2it.employeemanagement.dao.impl.EmployeeDaoImpl;
+import com.ideas2it.employeemanagement.model.Address;
 import com.ideas2it.employeemanagement.model.Employee;
 import com.ideas2it.employeemanagement.service.EmployeeService;
 
@@ -28,10 +29,15 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public boolean createEmployee(String name, String designation,
-            long salary, long mobile, Date dob) throws SQLException {
+            long salary, long mobile, Date dob,String permanentAddress[],
+            String temporaryAddress[]) throws SQLException {
         id++;
     	Employee employee = new Employee(name, designation, salary, id, mobile, dob);
-        return employeeDao.insertEmployee(employee);
+        Address employeePermanentAddress = new Address(id, permanentAddress[0], permanentAddress[1],
+                permanentAddress[2], permanentAddress[3], permanentAddress[4]); 
+        Address employeeTemporaryAddress =  new Address(id, temporaryAddress[0], temporaryAddress[1],
+                    temporaryAddress[2], temporaryAddress[3], temporaryAddress[4]); 
+        return employeeDao.insertEmployee(employee, employeePermanentAddress, employeeTemporaryAddress);
     }
     
     /**
@@ -42,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (null == employeeDao.getEmployee(id)) {
             return null;
         } else {
-            return (employeeDao.getEmployee(id)).toString();
+            return employeeDao.getEmployee(id);
         }
     }
     
@@ -61,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public boolean isIdExist(int id) throws SQLException {
-        return ((null == employeeDao.getEmployee(id)) ? false : true);
+        return employeeDao.isIdExist(id);
     }
      
     /**
@@ -78,15 +84,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<String> getAll() throws SQLException {
         int id = 1; 
-        Employee employee;
-        List<String> employeeDetails = new ArrayList<String>();
+        String employeeDetails;
+        List<String> employeesDetails = new ArrayList<String>();
         do {
-            employee = employeeDao.getEmployee(id++);
-            if (null != employee) {
-                employeeDetails.add(employee.toString());
+            employeeDetails = employeeDao.getEmployee(id++);
+            if (null != employeeDetails) {
+                employeesDetails.add(employeeDetails);
             }
-        } while (null != employee);
-    	return employeeDetails;
+        } while (null != employeeDetails);
+    	return employeesDetails;
     }
     
     /**
@@ -147,5 +153,16 @@ public class EmployeeServiceImpl implements EmployeeService {
             return 0;
  	}
         return employeeId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    @Override
+    public void updateAddress(int id, String[] addressDetails, String option) 
+            throws SQLException {
+        Address employeeAddress = new Address(id, addressDetails[0], addressDetails[1],
+                addressDetails[2], addressDetails[3], addressDetails[4]);
+        employeeDao.updateAddress(id, employeeAddress, option);
     }
 }
