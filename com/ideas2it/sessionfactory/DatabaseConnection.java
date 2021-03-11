@@ -10,8 +10,7 @@ import java.sql.SQLException;
  * @created 09/03/2021
  */
 public class DatabaseConnection {
-    private static DatabaseConnection databaseConnection = new DatabaseConnection();
-
+    private static DatabaseConnection databaseConnection = null;
     private DatabaseConnection() {
     }
 	
@@ -20,7 +19,10 @@ public class DatabaseConnection {
      * @return DatabaseConnection object
      */
     public static DatabaseConnection getInstance() {
-        return databaseConnection;
+       if(null == databaseConnection) {
+         databaseConnection = new DatabaseConnection();
+       }
+       return databaseConnection;
     }
 
     /**
@@ -29,7 +31,9 @@ public class DatabaseConnection {
      */
     public Connection getDatabaseConnection() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/employeemanagement", "root", "25562556");
+            Connection connection = DriverManager.getConnection
+                    ("jdbc:mysql://localhost:3306/employeemanagement",
+                     "root", "25562556");
             return connection;
         } catch (SQLException e) {    
             System.out.println("Can't connect to database");

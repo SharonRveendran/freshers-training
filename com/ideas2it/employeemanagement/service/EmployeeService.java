@@ -20,11 +20,10 @@ public interface EmployeeService {
      * @param salary  Employee salary
      * @param mobile  Employee Mobile number
      * @param dob  Employee Date of birth  
-     * @return  true for successful insertion and false for insertion failure
+     * @return  employee id
      */
-   public boolean createEmployee(String name, String designation,
-            long salary, long mobile, Date dob,String permanentAddress[],
-            String temporaryAddress[]) throws SQLException;
+   public int createEmployee(String name, String designation,
+            long salary, long mobile, Date dob) throws SQLException;
     
     /**
      * Method to return employee details based on employee id
@@ -96,10 +95,16 @@ public interface EmployeeService {
     
     /**
      * Methode to update address
-     * @param id employee id
+     * @param addressId employee address id
      * @param addressDetails array of address details
-     * @param option user given option for type of address
      */
-    public void updateAddress(int id, String[] addressDetails, String option)
+    public void updateAddress(int addressId, String[] addressDetails)
             throws SQLException ;
+    
+    /**
+     * Methode to create address
+     * @param employeeId
+     * @param addressDetails
+     */
+    public void createAddress(int employeeId, String addressDetails[], String addressChoice) throws SQLException;
 }

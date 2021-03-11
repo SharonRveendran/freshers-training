@@ -28,16 +28,23 @@ public class EmployeeServiceImpl implements EmployeeService {
      * {@inheritdoc}
      */
     @Override
-    public boolean createEmployee(String name, String designation,
-            long salary, long mobile, Date dob,String permanentAddress[],
-            String temporaryAddress[]) throws SQLException {
+    public int createEmployee(String name, String designation,
+            long salary, long mobile, Date dob) throws SQLException {
         id++;
-    	Employee employee = new Employee(name, designation, salary, id, mobile, dob);
-        Address employeePermanentAddress = new Address(id, permanentAddress[0], permanentAddress[1],
-                permanentAddress[2], permanentAddress[3], permanentAddress[4]); 
-        Address employeeTemporaryAddress =  new Address(id, temporaryAddress[0], temporaryAddress[1],
-                    temporaryAddress[2], temporaryAddress[3], temporaryAddress[4]); 
-        return employeeDao.insertEmployee(employee, employeePermanentAddress, employeeTemporaryAddress);
+    	Employee employee = new Employee(name, designation, salary, id, mobile, dob);  
+        return employeeDao.insertEmployee(employee);
+        
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    @Override
+    public void createAddress(int employeeId, String addressDetails[], String addressChoice)
+            throws SQLException {
+       Address employeeAddress = new Address(0, employeeId, addressDetails[0], addressDetails[1],
+                addressDetails[2], addressDetails[3], addressDetails[4]); 
+       employeeDao.insertAddress(employeeAddress, addressChoice);
     }
     
     /**
@@ -159,10 +166,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * {@inheritdoc}
      */
     @Override
-    public void updateAddress(int id, String[] addressDetails, String option) 
+    public void updateAddress(int addressId, String[] addressDetails) 
             throws SQLException {
-        Address employeeAddress = new Address(id, addressDetails[0], addressDetails[1],
+        Address employeeAddress = new Address(addressId, 0,  addressDetails[0], addressDetails[1],
                 addressDetails[2], addressDetails[3], addressDetails[4]);
-        employeeDao.updateAddress(id, employeeAddress, option);
+        employeeDao.updateAddress(employeeAddress);
     }
 }

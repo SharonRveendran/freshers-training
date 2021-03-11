@@ -57,6 +57,9 @@ public class EmployeeView {
      * Method to create employee
      */
     private void createEmployee() throws SQLException {
+        int permanentAddressCount = 0;
+        String addressChoice;
+        String option = "1";
     	System.out.println(constants.getName);
     	String name = scanner.nextLine();
     	System.out.println(constants.getDesignation);
@@ -64,14 +67,24 @@ public class EmployeeView {
     	long salary = getAndValidateSalary();
     	long mobile = getAndValidateMobile();
     	Date dob = getDob();
-        System.out.println("Provide permanent address details");
-        String permanentAddress[] = getAddress();
-        System.out.println("Provide temporary address details");
-        String temporaryAddress[] = getAddress();
-    	if (employeeController.createEmployee(name, designation, salary, mobile,
-                dob,permanentAddress, temporaryAddress)) {
-    	    System.out.println(constants.successfullCreation);
-    	}
+        int id = employeeController.createEmployee(name, designation,salary, mobile, dob);
+        do {
+            System.out.println("\nSelect type of address\n1 : Permanent address\n2 : Temporary address");
+            addressChoice = scanner.nextLine();
+            if ("1".equals(addressChoice)) {
+                permanentAddressCount++;
+            }  
+            if (1 == permanentAddressCount||"2".equals(addressChoice)) {
+                String addressDetails[] = getAddress();
+    	        employeeController.createAddress(id, addressDetails, addressChoice);
+                System.out.println("Press 1 to add more address"
+                         + "\nPress other key to continue");
+                option = scanner.nextLine();
+            } else {
+                System.out.println("You already have a permanent address");
+            }
+        } while("1".equals(option));
+        System.out.println(constants.successfullCreation);
     }
      
     /**
@@ -147,7 +160,7 @@ public class EmployeeView {
     	    	   updateMobile(id);
                    break;
                 case "6":
-    	    	   updateAddress(id);
+    	    	   updateAddress();
                    break;
                 default:
                    System.out.println(constants.invalidDetails);
@@ -307,14 +320,20 @@ public class EmployeeView {
     }
     /**
      * Methode to update employee address
-     * @param id employee id
      */
-    private void updateAddress(int id) throws SQLException {
-        System.out.println("\n What do you want to update ?\n1 : "
-                + "Permanent address\n2 : Temporary address");
-        String option = scanner.nextLine();
+    private void updateAddress() throws SQLException {
+        String input;
+        int addressId;
+        System.out.println("Enter your address id");       
+        do {
+            input = scanner.nextLine();
+            addressId = employeeController.isValidId(input); 
+            if (0 == addressId) {
+                System.out.println(constants.invalidDetails);
+            }     
+    	} while(0 == addressId);
         String addressDetails[] = getAddress();
-        employeeController.updateAddress(id, addressDetails, option);
+        employeeController.updateAddress(addressId, addressDetails);
         System.out.println(constants.successfullUpdation);
     }		
 }

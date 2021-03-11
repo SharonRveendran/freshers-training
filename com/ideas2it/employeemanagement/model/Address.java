@@ -6,6 +6,7 @@ package com.ideas2it.employeemanagement.model;
  * @version 10/03/2021
  */
 public class Address {   
+    private int addressId;
     private int employeeId;
     private String doorNumber;
     private String street;
@@ -13,8 +14,9 @@ public class Address {
     private String state;
     private String country;
 	      
-    public Address(int employeeId, String doorNumber, String street, 
-            String district, String state, String country) {
+    public Address(int addressId, int employeeId, String doorNumber,
+           String street, String district, String state, String country) {
+        this.addressId = addressId;
         this.employeeId = employeeId;
         this.doorNumber = doorNumber;
         this.street = street;
@@ -23,8 +25,16 @@ public class Address {
         this.country = country;
     }
     
-    public void setEmployeeId(int id) {
-        this.employeeId = id;
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
+    }
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     public int getEmployeeId() {
@@ -72,7 +82,8 @@ public class Address {
     }
 
     public String toString() {
-    	return "\nDoor number   = " + doorNumber
+    	return "\nAddress id    = " + addressId 
+                + "\nDoor number   = " + doorNumber
                 + "\nStreet        = " + street
                 + "\nDistrict      = " + district
                 + "\nState         = " + state

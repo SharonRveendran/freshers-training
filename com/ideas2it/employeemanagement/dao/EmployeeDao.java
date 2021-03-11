@@ -23,12 +23,10 @@ public interface EmployeeDao {
     /**
      * Method to insert employee to database  
      * @param employee
-     * @param permanentAddress permanent address of employee
-     * @param temporaryAddress temporary address of employye
-     * @return true if employee inserted else false 
+     * @param employeeAddress address object of employee
+     * @return employee idt
      */
-     public boolean insertEmployee(Employee employee, Address permanentAddress,
-             Address temporaryAddress) throws SQLException ;
+     public int insertEmployee(Employee employee) throws SQLException ;
 
     /**
      * Methode to delete employee based on employee id
@@ -56,6 +54,11 @@ public interface EmployeeDao {
      * @param addressDetails array of address details
      * @param option user given option for type of address
      */
-    public void updateAddress(int id, Address employeeAddress, String option)
-            throws SQLException;
+    public void updateAddress(Address employeeAddress)throws SQLException;
+
+    /**
+     * Method to insert address
+     * @param employeeAddress
+     */
+    public void insertAddress(Address employeeAddress, String addressChoice) throws SQLException;
 }
