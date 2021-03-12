@@ -28,35 +28,52 @@ public class EmployeeServiceImpl implements EmployeeService {
      * {@inheritdoc}
      */
     @Override
-    public int createEmployee(String name, String designation,
-            long salary, long mobile, Date dob) throws SQLException {
+    public void createEmployee(String name, String designation, long salary,
+            long mobile, Date dob, List<String[]> employeeAddressesDetails) throws SQLException {
+        Address employeeAddress;
+        String addressType;
+        List<Address> employeeAddresses = new ArrayList<Address>();
         id++;
-    	Employee employee = new Employee(name, designation, salary, id, mobile, dob);  
-        return employeeDao.insertEmployee(employee);
-        
+        for (int index = 0; index < employeeAddressesDetails.size(); index++) {
+            employeeAddress = new Address(0, id, employeeAddressesDetails.get(index)[0], employeeAddressesDetails.get(index)[1],
+                        employeeAddressesDetails.get(index)[2], employeeAddressesDetails.get(index)[3], employeeAddressesDetails.get(index)[4],                                                 employeeAddressesDetails.get(index)[5]);
+            employeeAddresses.add(employeeAddress);
+        } 
+    	Employee employee = new Employee(name, designation, salary, id, mobile, dob, employeeAddresses); 
+        employeeDao.insertEmployee(employee);   
     }
 
     /**
      * {@inheritdoc}
      */
     @Override
-    public void createAddress(int employeeId, String addressDetails[], String addressChoice)
-            throws SQLException {
-       Address employeeAddress = new Address(0, employeeId, addressDetails[0], addressDetails[1],
-                addressDetails[2], addressDetails[3], addressDetails[4]); 
-       employeeDao.insertAddress(employeeAddress, addressChoice);
+    public String getEmployee(int id) throws SQLException {    
+        Employee employee = employeeDao.getEmployee(id);
+        return getEmployeeDetails(employee);
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    @Override
-    public String getEmployee(int id) throws SQLException {
-        if (null == employeeDao.getEmployee(id)) {
-            return null;
+    private String getEmployeeDetails(Employee employee) {
+        if (null != employee ) {
+            int temporaryAddressCount = 1;
+            String addressesDetails = employee.toString();
+            List<Address> employeeAddresses = employee.getEmployeeAddresses();
+            for (int index = 0; index < employeeAddresses.size(); index++) {
+                if ("permanent".equals(employeeAddresses.get(index).getAddressType())) {
+                    addressesDetails = addressesDetails + "\nPermanent address\n-----------------\n\n";
+                }
+                if ("temporary".equals(employeeAddresses.get(index).getAddressType())) {
+                    addressesDetails = addressesDetails + "\nTemporary address " + temporaryAddressCount + "\n--------------------\n\n";
+                    temporaryAddressCount++;
+                }    
+                addressesDetails = addressesDetails + employeeAddresses.get(index).toString();
+            }
+        return addressesDetails;
         } else {
-            return employeeDao.getEmployee(id);
-        }
+            return null;
+        }        
     }
     
     /**
@@ -90,16 +107,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public List<String> getAll() throws SQLException {
-        int id = 1; 
-        String employeeDetails;
         List<String> employeesDetails = new ArrayList<String>();
-        do {
-            employeeDetails = employeeDao.getEmployee(id++);
-            if (null != employeeDetails) {
-                employeesDetails.add(employeeDetails);
-            }
-        } while (null != employeeDetails);
-    	return employeesDetails;
+        List<Employee> employees = new ArrayList<Employee>();
+        employees = employeeDao.getAllEmployee();
+        for(int index = 0; index < employees.size(); index++) {
+            employeesDetails.add(getEmployeeDetails(employees.get(index)));
+        }
+        return employeesDetails;
     }
     
     /**
@@ -168,8 +182,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void updateAddress(int addressId, String[] addressDetails) 
             throws SQLException {
-        Address employeeAddress = new Address(addressId, 0,  addressDetails[0], addressDetails[1],
+      /*  Address employeeAddress = new Address(addressId, 0,  addressDetails[0], addressDetails[1],
                 addressDetails[2], addressDetails[3], addressDetails[4]);
-        employeeDao.updateAddress(employeeAddress);
+        employeeDao.updateAddress(employeeAddress);*/
     }
 }

@@ -2,6 +2,7 @@ package com.ideas2it.employeemanagement.view;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
@@ -57,6 +58,7 @@ public class EmployeeView {
      * Method to create employee
      */
     private void createEmployee() throws SQLException {
+        List<String[]> employeeAddresses = new ArrayList<String[]>();
         int permanentAddressCount = 0;
         String addressChoice;
         String option = "1";
@@ -67,7 +69,6 @@ public class EmployeeView {
     	long salary = getAndValidateSalary();
     	long mobile = getAndValidateMobile();
     	Date dob = getDob();
-        int id = employeeController.createEmployee(name, designation,salary, mobile, dob);
         do {
             System.out.println("\nSelect type of address\n1 : Permanent address\n2 : Temporary address");
             addressChoice = scanner.nextLine();
@@ -75,8 +76,8 @@ public class EmployeeView {
                 permanentAddressCount++;
             }  
             if (1 == permanentAddressCount||"2".equals(addressChoice)) {
-                String addressDetails[] = getAddress();
-    	        employeeController.createAddress(id, addressDetails, addressChoice);
+                String addressDetails[] = getAddress(addressChoice);
+    	        employeeAddresses.add(addressDetails);
                 System.out.println("Press 1 to add more address"
                          + "\nPress other key to continue");
                 option = scanner.nextLine();
@@ -84,6 +85,7 @@ public class EmployeeView {
                 System.out.println("You already have a permanent address");
             }
         } while("1".equals(option));
+        employeeController.createEmployee(name, designation, salary, mobile, dob, employeeAddresses);
         System.out.println(constants.successfullCreation);
     }
      
@@ -91,19 +93,24 @@ public class EmployeeView {
      * Method to get Address details
      * @return array of employee address details
      */
-    private String[] getAddress() { 
-        String address[] = new String[5];    
+    private String[] getAddress(String option) { 
+        String addressDetails[] = new String[6];    
         System.out.println("Enter door number");
-        address[0] = scanner.nextLine();
+        addressDetails[0] = scanner.nextLine();
         System.out.println("Enter street");
-        address[1] = scanner.nextLine();
+        addressDetails[1] = scanner.nextLine();
         System.out.println("Enter District");
-        address[2] = scanner.nextLine();
+        addressDetails[2] = scanner.nextLine();
         System.out.println("Enter State");
-        address[3] = scanner.nextLine();
+        addressDetails[3] = scanner.nextLine();
         System.out.println("Enter Country");
-        address[4] = scanner.nextLine();
-        return address;
+        addressDetails[4] = scanner.nextLine();
+        if ("1".equals(option)) {
+            addressDetails[5] = "permanent";
+        } else {
+            addressDetails[5] = "temporary";
+        }
+        return addressDetails;
     }
 
     /**
@@ -322,7 +329,7 @@ public class EmployeeView {
      * Methode to update employee address
      */
     private void updateAddress() throws SQLException {
-        String input;
+       /* String input;
         int addressId;
         System.out.println("Enter your address id");       
         do {
@@ -334,6 +341,6 @@ public class EmployeeView {
     	} while(0 == addressId);
         String addressDetails[] = getAddress();
         employeeController.updateAddress(addressId, addressDetails);
-        System.out.println(constants.successfullUpdation);
+        System.out.println(constants.successfullUpdation);*/
     }		
 }

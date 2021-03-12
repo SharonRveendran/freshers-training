@@ -2,6 +2,7 @@ package com.ideas2it.employeemanagement.dao;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.ideas2it.employeemanagement.model.Address;
 import com.ideas2it.employeemanagement.model.Employee;
@@ -18,7 +19,7 @@ public interface EmployeeDao {
      * @param id employee id
      * @return employee detailsb as a string
      */
-     public String getEmployee(int id) throws SQLException, ClassNotFoundException;
+     public Employee getEmployee(int id) throws SQLException, ClassNotFoundException;
  
     /**
      * Method to insert employee to database  
@@ -26,7 +27,7 @@ public interface EmployeeDao {
      * @param employeeAddress address object of employee
      * @return employee idt
      */
-     public int insertEmployee(Employee employee) throws SQLException ;
+     public void insertEmployee(Employee employee) throws SQLException ;
 
     /**
      * Methode to delete employee based on employee id
@@ -55,10 +56,9 @@ public interface EmployeeDao {
      * @param option user given option for type of address
      */
     public void updateAddress(Address employeeAddress)throws SQLException;
-
+  
     /**
-     * Method to insert address
-     * @param employeeAddress
+     * Methode to get all employee object
      */
-    public void insertAddress(Address employeeAddress, String addressChoice) throws SQLException;
+     public List<Employee> getAllEmployee() throws SQLException;
 }

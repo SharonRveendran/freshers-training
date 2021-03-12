@@ -22,8 +22,8 @@ public interface EmployeeService {
      * @param dob  Employee Date of birth  
      * @return  employee id
      */
-   public int createEmployee(String name, String designation,
-            long salary, long mobile, Date dob) throws SQLException;
+   public void createEmployee(String name, String designation, long salary,
+           long mobile, Date dob, List<String[]> employeeAddresses) throws SQLException;
     
     /**
      * Method to return employee details based on employee id
@@ -100,11 +100,9 @@ public interface EmployeeService {
      */
     public void updateAddress(int addressId, String[] addressDetails)
             throws SQLException ;
-    
     /**
-     * Methode to create address
-     * @param employeeId
-     * @param addressDetails
+     * Methode to get employeeDetails
+     * @param employee employee object
      */
-    public void createAddress(int employeeId, String addressDetails[], String addressChoice) throws SQLException;
+    //private String getEmployeeDetails(Employee employee);
 }

@@ -23,9 +23,9 @@ public class EmployeeController {
      * @param dob  Employee date of birth
      * @return  employee id
      */
-    public int createEmployee(String name, String designation,long salary,
-            long mobile,Date dob) throws SQLException {
-    	return employeeService.createEmployee(name, designation, salary, mobile, dob);
+    public void createEmployee(String name, String designation,long salary,
+            long mobile,Date dob, List<String[]> employeeAddresses) throws SQLException {
+        employeeService.createEmployee(name, designation, salary, mobile, dob, employeeAddresses);
     }
     
     /**
@@ -155,14 +155,5 @@ public class EmployeeController {
     public void updateAddress(int addressId, String[] addressDetails)
             throws SQLException {
         employeeService.updateAddress(addressId, addressDetails);
-    }
-
-    /**
-     * Methode to create address
-     * @param id employee id
-     */
-    public void createAddress(int employeeId, String addressDetails[], String addressChoice)
-            throws SQLException {
-        employeeService.createAddress(employeeId, addressDetails, addressChoice);
     }
 }

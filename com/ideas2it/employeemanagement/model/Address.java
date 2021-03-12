@@ -13,9 +13,10 @@ public class Address {
     private String district;
     private String state;
     private String country;
+    private String addressType;
 	      
     public Address(int addressId, int employeeId, String doorNumber,
-           String street, String district, String state, String country) {
+           String street, String district, String state, String country, String addressType) {
         this.addressId = addressId;
         this.employeeId = employeeId;
         this.doorNumber = doorNumber;
@@ -23,6 +24,7 @@ public class Address {
         this.district = district;
         this.state = state;
         this.country = country;
+        this.addressType = addressType;
     }
     
     public void setAddressId(int addressId) {
@@ -30,7 +32,7 @@ public class Address {
     }
 
     public int getAddressId() {
-        return addressId;
+        return addressId; 
     }
 
     public void setEmployeeId(int employeeId) {
@@ -81,8 +83,16 @@ public class Address {
         return country;
     }
 
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
+    }
+	
+    public String getAddressType() {
+        return addressType;
+    }
+
     public String toString() {
-    	return "\nAddress id    = " + addressId 
+    	return  "Address id    = " + addressId 
                 + "\nDoor number   = " + doorNumber
                 + "\nStreet        = " + street
                 + "\nDistrict      = " + district

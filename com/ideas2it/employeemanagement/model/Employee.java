@@ -2,6 +2,10 @@ package com.ideas2it.employeemanagement.model;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ideas2it.employeemanagement.model.Address;
 
 /**
  * POJO class for employee providing id,
@@ -15,16 +19,18 @@ public class Employee {
     private Date dob;
     private long mobile;
     private String designation;
-    private long salary;  
+    private long salary;
+    private List<Address> employeeAddresses = new ArrayList<Address>();  
     
     public Employee(String name, String designation,
-    		long salary, int id, long mobile, Date dob) {
+    		long salary, int id, long mobile, Date dob, List<Address> employeeAddresses) {
     	this.id = id;
         this.name = name;
         this.dob = dob;
         this.mobile = mobile; 
     	this.designation = designation;
-    	this.salary = salary; 	
+    	this.salary = salary; 
+        this.employeeAddresses = employeeAddresses;	
     }
  
     public int getId() {
@@ -74,6 +80,14 @@ public class Employee {
     public void setSalary(long salary) {
 	this.salary = salary;
     } 
+
+    public List<Address> getEmployeeAddresses() {
+	return employeeAddresses;
+    }
+	
+    public void setEmployeeAddresses(List<Address> employeeAddresses) {
+	this.employeeAddresses = employeeAddresses;
+    }
 	
     public String toString() {
     	return "\nEmployee Id             =  " + id + "\nEmployee Name           =  "
