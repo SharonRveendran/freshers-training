@@ -9,7 +9,7 @@ import com.ideas2it.employeemanagement.service.impl.EmployeeServiceImpl;
 /**
  * Class for Employee controller
  * @author Sharon V
- * @created 09-03-2021
+ * @created 13-03-2021
  */
 public class EmployeeController {
     EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
@@ -21,17 +21,20 @@ public class EmployeeController {
      * @param salary  Employee salary
      * @param mobile  Employee mobile number
      * @param dob  Employee date of birth
+     * @param employeeAddresses list of employee addresses
      * @return  employee id
      */
-    public void createEmployee(String name, String designation,long salary,
-            long mobile,Date dob, List<String[]> employeeAddresses) throws SQLException {
-        employeeService.createEmployee(name, designation, salary, mobile, dob, employeeAddresses);
+    public void createEmployee(String name, String designation,
+            double salary,long mobile,Date dob, List<String[]> employeeAddresses) 
+            throws SQLException {
+        employeeService.createEmployee(name, designation, salary,
+                mobile, dob, employeeAddresses);
     }
     
     /**
      * Method to get the employee details based on employee id
      * @param id Employee id
-     * @return Employee 
+     * @return Employee details as string
      */
     public String getEmployee(int id) throws SQLException {
     	return employeeService.getEmployee(id);
@@ -44,13 +47,14 @@ public class EmployeeController {
      * @return true for successful updation of name else return false
      */
     public void updateName(int id, String employeeName) throws SQLException {
-    	employeeService.updateEmployee(id, employeeName, null, 0l, null, 0l, "name");
+    	employeeService.updateEmployee(id, employeeName,
+                null, 0l, null, 0l, "name");
     }
     
     /**
      * Method to check whether the id is present in collection or not 
      * @param id Employee id
-     * @return true if id present in collection else return false
+     * @return true if id present in database else return false
      */
     public boolean isIdExist(int id) throws SQLException {
     	return employeeService.isIdExist(id);
@@ -72,7 +76,8 @@ public class EmployeeController {
      * @param id Employee id
      * @param employeeSalary Salary of Employee
      */
-    public void updateSalary(int id, long employeeSalary) throws SQLException {
+    public void updateSalary(int id, double employeeSalary)
+            throws SQLException {
     	employeeService.updateEmployee(id, null, null,
                 employeeSalary, null, 0l, "salary");
     }
@@ -92,7 +97,8 @@ public class EmployeeController {
      * @param mobile Employee mobile number
      */
     public void updateMobile(int id, long mobile) throws SQLException {
-    	employeeService.updateEmployee(id, null, null, 0l, null, mobile, "mobile");
+    	employeeService.updateEmployee(id, null, null,
+                0l, null, mobile, "mobile");
     }
     
     /**
@@ -105,7 +111,7 @@ public class EmployeeController {
 
     /**
      * Method to return all employee details present in collection
-     * @return all employee delails
+     * @return list of all employee delails
      */
     public List<String> getAll() throws SQLException {
     	return employeeService.getAll();
@@ -134,7 +140,7 @@ public class EmployeeController {
      * @param input user given salary
      * @return valid salary
      */
-     public long isValidSalary(String input) {
+     public double isValidSalary(String input) {
          return employeeService.isValidSalary(input);
      }
      

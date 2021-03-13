@@ -10,22 +10,20 @@ import com.ideas2it.employeemanagement.model.Employee;
 /**
  * Class to interact with database
  * @author Sharon V
- * @created 09-03-2021
+ * @created 13-03-2021
  */
 public interface EmployeeDao {
       
     /**
      * Method to get employee from database
      * @param id employee id
-     * @return employee detailsb as a string
+     * @return employee details as a string
      */
-     public Employee getEmployee(int id) throws SQLException, ClassNotFoundException;
+     public Employee getEmployee(int id) throws SQLException;
  
     /**
      * Method to insert employee to database  
      * @param employee
-     * @param employeeAddress address object of employee
-     * @return employee idt
      */
      public void insertEmployee(Employee employee) throws SQLException ;
 
@@ -33,7 +31,7 @@ public interface EmployeeDao {
      * Methode to delete employee based on employee id
      * @ param id employee id  
      */
-     public void deleteEmployee(int id) throws ClassNotFoundException, SQLException;
+     public void deleteEmployee(int id) throws SQLException;
          
    /**
      * Methode to update employee details
@@ -46,19 +44,25 @@ public interface EmployeeDao {
      * @param option option to specify the attribute that need to update
      */
     public void updateEmployee(int id, String name, String designation,
-            long salary, Date dob, long mobile, String option)
-            throws ClassNotFoundException, SQLException;
+            double salary, Date dob, long mobile, String option)
+            throws SQLException;
     
     /**
      * Methode to update address
-     * @param id employee id
-     * @param addressDetails array of address details
+     * @param employeeAddress employee address object
      * @param option user given option for type of address
      */
     public void updateAddress(Address employeeAddress)throws SQLException;
   
     /**
-     * Methode to get all employee object
+     * Methode to get all employee object as a list
      */
      public List<Employee> getAllEmployee() throws SQLException;
+    
+    /**
+     * Methode to check the id present in database or not
+     * @param id employee id
+     * @ return true if id present else false
+     */
+    public boolean isIdExist(int id) throws SQLException;
 }

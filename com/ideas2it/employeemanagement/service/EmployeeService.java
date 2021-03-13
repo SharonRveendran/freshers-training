@@ -9,7 +9,7 @@ import com.ideas2it.employeemanagement.model.Employee;
 /**
  * Class for Employee service
  * @author Sharon V
- * @created 09-03-2021
+ * @created 13-03-2021
  */
 public interface EmployeeService {
 	
@@ -19,18 +19,20 @@ public interface EmployeeService {
      * @param designation  Employee Designation
      * @param salary  Employee salary
      * @param mobile  Employee Mobile number
-     * @param dob  Employee Date of birth  
+     * @param dob  Employee Date of birth 
+     * @param employeeAddresses list of employee address details 
      * @return  employee id
      */
-   public void createEmployee(String name, String designation, long salary,
-           long mobile, Date dob, List<String[]> employeeAddresses) throws SQLException;
+   public void createEmployee(String name, String designation,
+           double salary, long mobile, Date dob,
+           List<String[]> employeeAddresses) throws SQLException;
     
     /**
      * Method to return employee details based on employee id
      * @param id Employee id
      * @return employee object if employee present else return null
      */
-    public String getEmployee(int id) throws ClassNotFoundException, SQLException;
+    public String getEmployee(int id) throws SQLException;
         
     /**
      * Methode to update employee details
@@ -43,7 +45,7 @@ public interface EmployeeService {
      * @param option option to specify the attribute that need to update
      */
     public void updateEmployee(int id, String name, String designation,
-            long salary, Date dob, long mobile, String option)
+            double salary, Date dob, long mobile, String option)
             throws ClassNotFoundException, SQLException;
    
     /**
@@ -51,23 +53,23 @@ public interface EmployeeService {
      * @param id Employee id
      * @return true if id present in collection else return false
      */
-    public boolean isIdExist(int id) throws ClassNotFoundException, SQLException;
+    public boolean isIdExist(int id) throws SQLException;
      
     /**
      * Method to delete the Employee based on employee id
      * @param id Employee id
      */
-    public void deleteEmployee(int id) throws ClassNotFoundException, SQLException;
+    public void deleteEmployee(int id) throws SQLException;
     	
     /**
      * Method to return all employee details present in collection
      * @return list of employee details
      */
-    public List<String> getAll() throws SQLException, ClassNotFoundException;
+    public List<String> getAll() throws SQLException;
         
     /**
      * Method to validate date
-     * @param date
+     * @param date input date as string
      * @return valid date
      */
     public Date isValidDate(String date);
@@ -84,7 +86,7 @@ public interface EmployeeService {
      * @param input user given input for salary
      * @return valid employee salary
      */
-    public long isValidSalary(String input);
+    public double isValidSalary(String input);
         
     /**
      * This method will validate employee id
@@ -100,9 +102,4 @@ public interface EmployeeService {
      */
     public void updateAddress(int addressId, String[] addressDetails)
             throws SQLException ;
-    /**
-     * Methode to get employeeDetails
-     * @param employee employee object
-     */
-    //private String getEmployeeDetails(Employee employee);
 }

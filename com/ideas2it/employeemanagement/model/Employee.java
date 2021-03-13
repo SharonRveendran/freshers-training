@@ -11,7 +11,7 @@ import com.ideas2it.employeemanagement.model.Address;
  * POJO class for employee providing id,
  * name, designation & salary. 
  * @author Sharon
- * @created 09-03-2021
+ * @created 13-03-2021
  */
 public class Employee {
     private int id;
@@ -19,11 +19,11 @@ public class Employee {
     private Date dob;
     private long mobile;
     private String designation;
-    private long salary;
+    private double salary;
     private List<Address> employeeAddresses = new ArrayList<Address>();  
     
-    public Employee(String name, String designation,
-    		long salary, int id, long mobile, Date dob, List<Address> employeeAddresses) {
+    public Employee(String name, String designation, double salary,
+            int id, long mobile, Date dob, List<Address> employeeAddresses) {
     	this.id = id;
         this.name = name;
         this.dob = dob;
@@ -73,11 +73,11 @@ public class Employee {
 	this.designation = designation;
     }
 		
-    public long getSalary() {
+    public double getSalary() {
 	return salary;
     }
 	
-    public void setSalary(long salary) {
+    public void setSalary(double salary) {
 	this.salary = salary;
     } 
 

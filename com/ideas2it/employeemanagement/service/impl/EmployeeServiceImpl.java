@@ -18,28 +18,32 @@ import com.ideas2it.employeemanagement.service.EmployeeService;
 /**
  * Class for Employee service
  * @author Sharon V
- * @created 09-03-2021
+ * @created 13-03-2021
  */
 public class EmployeeServiceImpl implements EmployeeService {
     EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
-    int id = 0;
 	
     /**
      * {@inheritdoc}
      */
     @Override
-    public void createEmployee(String name, String designation, long salary,
-            long mobile, Date dob, List<String[]> employeeAddressesDetails) throws SQLException {
+    public void createEmployee(String name, String designation, double salary,
+            long mobile, Date dob, List<String[]> employeeAddressesDetails)
+            throws SQLException {
         Address employeeAddress;
         String addressType;
         List<Address> employeeAddresses = new ArrayList<Address>();
-        id++;
         for (int index = 0; index < employeeAddressesDetails.size(); index++) {
-            employeeAddress = new Address(0, id, employeeAddressesDetails.get(index)[0], employeeAddressesDetails.get(index)[1],
-                        employeeAddressesDetails.get(index)[2], employeeAddressesDetails.get(index)[3], employeeAddressesDetails.get(index)[4],                                                 employeeAddressesDetails.get(index)[5]);
+            employeeAddress = new Address(0, 0, employeeAddressesDetails.get(index)[0],
+                        employeeAddressesDetails.get(index)[1],
+                        employeeAddressesDetails.get(index)[2],
+                        employeeAddressesDetails.get(index)[3],
+                        employeeAddressesDetails.get(index)[4],                                                 
+                        employeeAddressesDetails.get(index)[5]);
             employeeAddresses.add(employeeAddress);
         } 
-    	Employee employee = new Employee(name, designation, salary, id, mobile, dob, employeeAddresses); 
+    	Employee employee = new Employee(name, designation, salary,
+                0, mobile, dob, employeeAddresses); 
         employeeDao.insertEmployee(employee);   
     }
 
@@ -62,10 +66,12 @@ public class EmployeeServiceImpl implements EmployeeService {
             List<Address> employeeAddresses = employee.getEmployeeAddresses();
             for (int index = 0; index < employeeAddresses.size(); index++) {
                 if ("permanent".equals(employeeAddresses.get(index).getAddressType())) {
-                    addressesDetails = addressesDetails + "\nPermanent address\n-----------------\n\n";
+                    addressesDetails = addressesDetails +
+                            "\nPermanent address\n-----------------\n\n";
                 }
                 if ("temporary".equals(employeeAddresses.get(index).getAddressType())) {
-                    addressesDetails = addressesDetails + "\nTemporary address " + temporaryAddressCount + "\n--------------------\n\n";
+                    addressesDetails = addressesDetails + "\nTemporary address " +
+                            temporaryAddressCount + "\n--------------------\n\n";
                     temporaryAddressCount++;
                 }    
                 addressesDetails = addressesDetails + employeeAddresses.get(index).toString();
@@ -81,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void updateEmployee(int id, String name, String designation,
-            long salary, Date dob, long mobile, String option)
+            double salary, Date dob, long mobile, String option)
             throws SQLException {
     	employeeDao.updateEmployee(id, name, designation, salary, dob, mobile, option);
     }
@@ -152,10 +158,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * {@inheritdoc}
      */
     @Override
-    public long isValidSalary(String input) {
-        long employeeSalary;
+    public double isValidSalary(String input) {
+        double employeeSalary;
         try {
-            employeeSalary = Long.parseLong(input);          
+            employeeSalary = Double.parseDouble(input);          
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -182,8 +188,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void updateAddress(int addressId, String[] addressDetails) 
             throws SQLException {
-      /*  Address employeeAddress = new Address(addressId, 0,  addressDetails[0], addressDetails[1],
-                addressDetails[2], addressDetails[3], addressDetails[4]);
-        employeeDao.updateAddress(employeeAddress);*/
+        Address employeeAddress = new Address(addressId, 0, addressDetails[0],
+                addressDetails[1], addressDetails[2], addressDetails[3],
+                addressDetails[4], addressDetails[5]);
+        employeeDao.updateAddress(employeeAddress);
     }
 }

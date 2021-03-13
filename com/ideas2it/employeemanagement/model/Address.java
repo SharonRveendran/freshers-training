@@ -3,7 +3,7 @@ package com.ideas2it.employeemanagement.model;
 /**
  * Calss for address Pojo
  * @author Sharon v 
- * @version 10/03/2021
+ * @version 13/03/2021
  */
 public class Address {   
     private int addressId;
@@ -15,8 +15,8 @@ public class Address {
     private String country;
     private String addressType;
 	      
-    public Address(int addressId, int employeeId, String doorNumber,
-           String street, String district, String state, String country, String addressType) {
+    public Address(int addressId, int employeeId, String doorNumber, String street,
+            String district, String state, String country, String addressType) {
         this.addressId = addressId;
         this.employeeId = employeeId;
         this.doorNumber = doorNumber;

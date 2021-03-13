@@ -17,10 +17,9 @@ import com.ideas2it.sessionfactory.DatabaseConnection;
 /**
  * Class to interact with database
  * @author Sharon V
- * @created 09-03-2021
+ * @created 13-03-2021
  */
 public class EmployeeDaoImpl implements EmployeeDao {
-    int addressId = 0;
     DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
     Connection connection = databaseConnection.getDatabaseConnection();	
     PreparedStatement preparedStatement;
@@ -79,9 +78,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
             preparedStatement.setInt(1, employeeId);
             addressResultSet = preparedStatement.executeQuery();
             while(addressResultSet.next()) {
-                 employeeAddress = new Address(addressResultSet.getInt(1), addressResultSet.getInt(2), addressResultSet.getString(3),
-                            addressResultSet.getString(4),addressResultSet.getString(5),addressResultSet.getString(6),
-                            addressResultSet.getString(7), addressResultSet.getString(8));
+                 employeeAddress = new Address(addressResultSet.getInt(1), addressResultSet.getInt(2),
+                         addressResultSet.getString(3), addressResultSet.getString(4),
+                         addressResultSet.getString(5),addressResultSet.getString(6),
+                         addressResultSet.getString(7), addressResultSet.getString(8));
                  employeeAddresses.add(employeeAddress);
             } 
             employee = new Employee(resultSet.getString(2),
@@ -106,16 +106,20 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	     preparedStatement.setLong(3, employee.getMobile());
              preparedStatement.setDate(4, employee.getDob());
              preparedStatement.setString(5, employee.getDesignation());
-	     preparedStatement.setLong(6, employee.getSalary());
+	     preparedStatement.setDouble(6, employee.getSalary());
              preparedStatement.executeUpdate();
+             preparedStatement = connection.prepareStatement
+                     ("select max(employee_id) from employee");
+             resultSet = preparedStatement.executeQuery();
+             resultSet.next();		
+             int employeeId = resultSet.getInt(1);	         
              employeeAddresses = employee.getEmployeeAddresses();
              for (int index = 0; index < employeeAddresses.size(); index++) {
-                 addressId++;
                  employeeAddress = employeeAddresses.get(index);
                  preparedStatement = connection.prepareStatement
                          ("insert into address values(?, ?, ?, ?, ?, ?, ?, ?)");
-                 preparedStatement.setInt(1,addressId);
-                 preparedStatement.setInt(2,employeeAddress.getEmployeeId());
+                 preparedStatement.setInt(1,0);
+                 preparedStatement.setInt(2,employeeId);
                  preparedStatement.setString(3,employeeAddress.getDoorNumber());
                  preparedStatement.setString(4,employeeAddress.getStreet());
                  preparedStatement.setString(5,employeeAddress.getDistrict());
@@ -146,7 +150,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
      */
     @Override
     public void updateEmployee(int id, String name, String designation,
-            long salary, Date dob, long mobile, String option) 
+            double salary, Date dob, long mobile, String option) 
             throws SQLException {
         if ("name".equals(option)) {
     	   preparedStatement = connection.prepareStatement
@@ -161,7 +165,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     	if ("salary".equals(option)) {
     	   preparedStatement = connection.prepareStatement
                  ("update employee set employee_salary = ? where employee_id=?");  
-           preparedStatement.setLong(1, salary);
+           preparedStatement.setDouble(1, salary);
     	}
     	if ("dob".equals(option)) {
     	   preparedStatement = connection.prepareStatement
@@ -185,9 +189,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
          preparedStatement.setLong(1, mobile);
     }
     /**
-     * Method to check id present in datrabase or not
-     * @param id employee id
+     * {@inheritdoc}
      */
+    @Override
     public boolean isIdExist(int id) throws SQLException {
         preparedStatement = connection.prepareStatement
                 ("select employee_id from employee where employee_id = ?");
@@ -203,13 +207,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public void updateAddress(Address employeeAddress) throws SQLException {
         preparedStatement = connection.prepareStatement
                 ("update address set door_number = ?, street = ?, district = ?,"
-                + "state = ?,country = ? where address_id = ?");
+                + "state = ?,country = ?, address_type= ? where address_id = ?");
         preparedStatement.setString(1,employeeAddress.getDoorNumber());
         preparedStatement.setString(2,employeeAddress.getStreet());
         preparedStatement.setString(3,employeeAddress.getDistrict());
         preparedStatement.setString(4,employeeAddress.getState());
         preparedStatement.setString(5,employeeAddress.getCountry());
-        preparedStatement.setInt(6,employeeAddress.getAddressId());
+        preparedStatement.setString(6,employeeAddress.getAddressType());
+        preparedStatement.setInt(7,employeeAddress.getAddressId());
         preparedStatement.executeUpdate();   
     }
 }

@@ -13,7 +13,7 @@ import com.ideas2it.employeemanagement.controller.EmployeeController;
 /**
  * Class for Employee view
  * @author Sharon V
- * @created 09-03-2021
+ * @created 13-03-2021
  */
 public class EmployeeView {
     Constants constants = new Constants();
@@ -60,18 +60,17 @@ public class EmployeeView {
     private void createEmployee() throws SQLException {
         List<String[]> employeeAddresses = new ArrayList<String[]>();
         int permanentAddressCount = 0;
-        String addressChoice;
         String option = "1";
-    	System.out.println(constants.getName);
+    	System.out.println(constants.getNameMessage);
     	String name = scanner.nextLine();
-    	System.out.println(constants.getDesignation);
+    	System.out.println(constants.getDesignationMessage);
     	String designation = scanner.nextLine();
-    	long salary = getAndValidateSalary();
+    	double salary = getAndValidateSalary();
     	long mobile = getAndValidateMobile();
     	Date dob = getDob();
         do {
-            System.out.println("\nSelect type of address\n1 : Permanent address\n2 : Temporary address");
-            addressChoice = scanner.nextLine();
+            System.out.println("\nSelect type of address\n1 : Permanent\n2 : Temporary");
+            String addressChoice = scanner.nextLine();
             if ("1".equals(addressChoice)) {
                 permanentAddressCount++;
             }  
@@ -85,12 +84,14 @@ public class EmployeeView {
                 System.out.println("You already have a permanent address");
             }
         } while("1".equals(option));
-        employeeController.createEmployee(name, designation, salary, mobile, dob, employeeAddresses);
+        employeeController.createEmployee(name, designation, salary,
+                mobile, dob, employeeAddresses);
         System.out.println(constants.successfullCreation);
     }
      
     /**
      * Method to get Address details
+     * @param option user given option for address type
      * @return array of employee address details
      */
     private String[] getAddress(String option) { 
@@ -119,7 +120,7 @@ public class EmployeeView {
      */
     private Date getDob() {
         String date;
-        System.out.println(constants.getDate);      
+        System.out.println(constants.getDateMessage);      
         do {
             date = scanner.nextLine();
 	    if (null == employeeController.isValidDate(date)) { 
@@ -182,7 +183,7 @@ public class EmployeeView {
      * @return employee id
      */
     private int getAndValidateId() throws SQLException {
-        System.out.println(constants.getId);
+        System.out.println(constants.getIdMessage);
         String input;
         int id = 0;
         do {
@@ -200,7 +201,7 @@ public class EmployeeView {
      * @param id the employee id
      */
     private void updateName(int id) throws SQLException {
-    	System.out.println(constants.getName);
+    	System.out.println(constants.getNameMessage);
         String employeeName = scanner.nextLine();
         if(employeeController.isIdExist(id)) {
             employeeController.updateName(id, employeeName);
@@ -215,7 +216,7 @@ public class EmployeeView {
      * @param id the employee id
      */
     private void updateDesignation(int id) throws SQLException {
-    	System.out.println(constants.getDesignation);
+    	System.out.println(constants.getDesignationMessage);
         String designation = scanner.nextLine();
         employeeController.updateDesignation(id, designation);
         System.out.println(constants.successfullUpdation);
@@ -226,7 +227,7 @@ public class EmployeeView {
      * @param id the employee id
      */
     private void updateSalary(int id) throws SQLException {
-    	long employeeSalary = getAndValidateSalary();
+    	double employeeSalary = getAndValidateSalary();
         employeeController.updateSalary(id, employeeSalary);
         System.out.println(constants.successfullUpdation);
     }
@@ -235,8 +236,8 @@ public class EmployeeView {
      * Method to get and validate Employee salary
      * @return valid salary
      */
-    private long getAndValidateSalary() {
-    	System.out.println(constants.getSalary);
+    private double getAndValidateSalary() {
+    	System.out.println(constants.getSalaryMessage);
     	String input;
     	do {  
             input = scanner.nextLine();	    
@@ -253,7 +254,7 @@ public class EmployeeView {
      * @param id the employee id
      */
     private void updateDob(int id) throws SQLException {
-    	System.out.println(constants.getDate);
+    	System.out.println(constants.getDateMessage);
     	String date;
     	do {
             date = scanner.nextLine();
@@ -284,7 +285,7 @@ public class EmployeeView {
     private long getAndValidateMobile() {
         String input;
     	long mobile = 1;
-    	System.out.println(constants.getMobile);
+    	System.out.println(constants.getMobileMessage);
         do {  	    
             input = scanner.nextLine();
       	    if (0 == employeeController.isValidMobile(input)) {
@@ -329,9 +330,11 @@ public class EmployeeView {
      * Methode to update employee address
      */
     private void updateAddress() throws SQLException {
-       /* String input;
+        String input;
         int addressId;
-        System.out.println("Enter your address id");       
+        System.out.println("\nSelect address type\n1 : Permanant\n2 : Temporary");
+        String option = scanner.nextLine();
+        System.out.println("\nEnter your address id");       
         do {
             input = scanner.nextLine();
             addressId = employeeController.isValidId(input); 
@@ -339,8 +342,8 @@ public class EmployeeView {
                 System.out.println(constants.invalidDetails);
             }     
     	} while(0 == addressId);
-        String addressDetails[] = getAddress();
+        String addressDetails[] = getAddress(option);
         employeeController.updateAddress(addressId, addressDetails);
-        System.out.println(constants.successfullUpdation);*/
+        System.out.println(constants.successfullUpdation);
     }		
 }
